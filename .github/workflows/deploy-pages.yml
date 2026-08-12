@@ -1,0 +1,158 @@
+name: Deploy selected branch to Pages
+
+on:
+  push:
+    branches:
+      - trip/taiwan-2026-08
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Guard branch-to-slug mapping
+        env:
+          EXPECTED_REF: refs/heads/trip/taiwan-2026-08
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != "$EXPECTED_REF" ]]; then
+            echo "Ref $GITHUB_REF is not authorized to publish taiwan-2026-08." >&2
+            exit 1
+          fi
+
+      - name: Check out source branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate and build
+        run: npm run validate
+
+      - name: Validate build artifact tree
+        run: python3 scripts/assert-safe-pages-tree.py dist
+
+      - name: Upload immutable site build
+        uses: actions/upload-artifact@v4
+        with:
+          name: taiwan-2026-08-build
+          path: dist
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out deployment scripts
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Download immutable site build
+        uses: actions/download-artifact@v4
+        with:
+          name: taiwan-2026-08-build
+          path: dist
+
+      - name: Assemble and persist complete Pages tree
+        env:
+          EXPECTED_REF: refs/heads/trip/taiwan-2026-08
+          SITE_SLUG: taiwan-2026-08
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != "$EXPECTED_REF" ]]; then
+            echo "Ref $GITHUB_REF is not authorized to publish $SITE_SLUG." >&2
+            exit 1
+          fi
+          if [[ ! "$SITE_SLUG" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
+            echo "Unsafe site slug: $SITE_SLUG" >&2
+            exit 1
+          fi
+          python3 scripts/assert-safe-pages-tree.py dist
+
+          rm -rf pages-site pages-artifact
+          remote="https://github.com/${GITHUB_REPOSITORY}.git"
+          askpass="$RUNNER_TEMP/git-askpass.sh"
+          printf '%s\n' \
+            '#!/bin/sh' \
+            'case "$1" in' \
+            '  *Username*) printf "%s\n" "x-access-token" ;;' \
+            '  *) printf "%s\n" "$GITHUB_TOKEN" ;;' \
+            'esac' > "$askpass"
+          chmod 700 "$askpass"
+          export GIT_ASKPASS="$askpass"
+          export GIT_TERMINAL_PROMPT=0
+
+          set +e
+          git ls-remote --exit-code --heads "$remote" refs/heads/gh-pages >/dev/null 2>&1
+          remote_status=$?
+          set -e
+          case "$remote_status" in
+            0)
+              git clone --branch gh-pages --single-branch "$remote" pages-site
+              ;;
+            2)
+              mkdir pages-site
+              git -C pages-site init
+              git -C pages-site switch --orphan gh-pages
+              git -C pages-site remote add origin "$remote"
+              ;;
+            *)
+              echo "Unable to inspect gh-pages; refusing to rebuild from an empty tree." >&2
+              exit "$remote_status"
+              ;;
+          esac
+
+          python3 scripts/assert-safe-pages-tree.py pages-site --allow-git
+          rm -rf "pages-site/${SITE_SLUG}"
+          mkdir -p "pages-site/${SITE_SLUG}"
+          cp -a dist/. "pages-site/${SITE_SLUG}/"
+          touch pages-site/.nojekyll
+          python3 scripts/render-pages-index.py pages-site
+          python3 scripts/assert-safe-pages-tree.py pages-site --allow-git
+
+          git -C pages-site config user.name github-actions[bot]
+          git -C pages-site config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C pages-site remote set-url origin "$remote"
+          git -C pages-site add -A
+          if ! git -C pages-site diff --cached --quiet; then
+            git -C pages-site commit -m "deploy: update ${SITE_SLUG}"
+            git -C pages-site push origin HEAD:gh-pages
+          fi
+
+          mkdir pages-artifact
+          git -C pages-site archive --format=tar HEAD | tar -xf - -C pages-artifact
+          python3 scripts/assert-safe-pages-tree.py pages-artifact
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload complete Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages-artifact
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

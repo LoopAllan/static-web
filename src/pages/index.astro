@@ -1,0 +1,220 @@
+---
+import '../styles/global.css';
+
+const updatedAt = '2026/8/13 01:00（臺灣時間）';
+const mapLink = (query: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="2026 年 8 月 13 日至 16 日，從關渡出發，經宜蘭、台東、墾丁返臺北的四天三夜家庭自駕行程。" />
+    <meta name="theme-color" content="#fffaf5" />
+    <title>2026 家庭環臺旅行｜四天三夜自駕</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#top" aria-label="回到頁首">
+          <span class="brand-mark" aria-hidden="true">島</span>
+          <span>家庭環臺旅行</span>
+        </a>
+        <nav aria-label="行程快速導覽">
+          <a href="#day-1">宜蘭</a>
+          <a href="#day-2">台東</a>
+          <a href="#day-3">墾丁</a>
+          <a href="#day-4">返北</a>
+          <a href="#checklist">出發檢查</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">2026 · FAMILY ROAD TRIP</p>
+          <h1 id="hero-title">沿著海岸與縱谷，<br /><span>慢慢繞臺灣一圈。</span></h1>
+          <p class="hero-lede">四天三夜、三人自駕。行程特別為 50 多歲父母調整：少排隊、少繞路、每天保留午休與臨時取消的餘裕。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#day-1">查看每日行程</a>
+            <a class="button button-secondary" href="#checklist">先看安全門檻</a>
+          </div>
+        </div>
+        <div class="route-art" role="img" aria-label="關渡、宜蘭、台東、墾丁、關渡環狀路線示意">
+          <div class="route-line" aria-hidden="true"></div>
+          <ol>
+            <li class="route-taipei"><span>01</span><strong>關渡</strong><small>出發</small></li>
+            <li class="route-yilan"><span>02</span><strong>宜蘭</strong><small>老街・傳藝</small></li>
+            <li class="route-taitung"><span>03</span><strong>台東</strong><small>縱谷・南迴</small></li>
+            <li class="route-kenting"><span>04</span><strong>墾丁</strong><small>海洋・古城</small></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="alert-card" aria-labelledby="alert-title">
+        <div class="alert-icon" aria-hidden="true">!</div>
+        <div>
+          <p class="kicker">這趟旅程最重要的規則</p>
+          <h2 id="alert-title">出現預警性封閉就停止跨區移動</h2>
+          <p>蘇花或南迴若顯示道路中斷、只出不進、搶通時間未定，或相關縣市發布豪雨／陸上颱風警報，不到管制點等待，也不改走中橫等高風險替代線。</p>
+        </div>
+        <div class="alert-links">
+          <a href="https://168.thb.gov.tw/" target="_blank" rel="noreferrer">查省道 168 ↗</a>
+          <a href="https://www.cwa.gov.tw/" target="_blank" rel="noreferrer">查中央氣象署 ↗</a>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="旅程摘要">
+        <article><span class="summary-icon" aria-hidden="true">4</span><div><strong>四天三夜</strong><small>8/13（四）— 8/16（日）</small></div></article>
+        <article><span class="summary-icon" aria-hidden="true">3</span><div><strong>三人自駕</strong><small>父母同行・輪替駕駛</small></div></article>
+        <article><span class="summary-icon" aria-hidden="true">↗</span><div><strong>約 1,000 公里</strong><small>長途日以休息優先</small></div></article>
+        <article><span class="summary-icon" aria-hidden="true">✓</span><div><strong>每日低於 2 萬步</strong><small>景點採精華短走</small></div></article>
+      </section>
+
+      <section class="section intro-section" aria-labelledby="plan-title">
+        <div class="section-heading">
+          <p class="eyebrow">THE PLAN</p>
+          <h2 id="plan-title">不是塞滿景點，<br />而是每天都能舒服抵達。</h2>
+          <p>熱門攤位排超過 10 分鐘就換店；停車找超過 10 分鐘就跳過景點。下雨不是硬撐的理由，而是切換室內方案的訊號。</p>
+        </div>
+        <div class="principles">
+          <article><span>01</span><h3>早出發</h3><p>蘇花、南迴及週日北返都在午後車流或對流前通過。</p></article>
+          <article><span>02</span><h3>只留主角</h3><p>每段只排一個主要景點，其餘停靠都可以取消。</p></article>
+          <article><span>03</span><h3>停車先決</h3><p>不繞圈找路邊位，優先旅店車位、正式停車場與服務區。</p></article>
+        </div>
+      </section>
+
+      <section class="itinerary" aria-labelledby="itinerary-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">DAY BY DAY</p>
+          <h2 id="itinerary-title">四天行程</h2>
+        </div>
+
+        <article class="day-card" id="day-1">
+          <div class="day-banner day-one">
+            <div><p>DAY 01 · 8/13（四）</p><h3>關渡 → 宜蘭</h3><span>傳統街屋、慢逛與提早吃夜市</span></div>
+            <dl><div><dt>出發</dt><dd>10:00</dd></div><div><dt>駕駛</dt><dd>約 2 小時</dd></div><div><dt>步行</dt><dd>8,000–13,000 步</dd></div></dl>
+          </div>
+          <div class="day-body">
+            <ol class="timeline">
+              <li><time>10:00</time><div><h4>關渡出發</h4><p>出發前看國 5 與宜蘭雷達回波；國五壅塞時，傳藝停留時間直接縮短。</p></div></li>
+              <li><time>11:30</time><div><h4>宜蘭傳藝園區・先午餐再逛</h4><p>12:15–14:30 走文昌街、魯班街與室內展館，少量購物，不追滿場表演。</p><ul class="fact-row" aria-label="宜蘭傳藝資訊" tabindex="0"><li>09:00–18:00</li><li>一般票 NT$150</li><li>停車當日最高 NT$60</li><li>散客免預約</li></ul><div class="link-row"><a href={mapLink('宜蘭傳藝園區')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.px-sunmake.org.tw/info" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
+              <li><time>15:00</time><div><h4>煙波大飯店宜蘭館・入住與午休</h4><p>預留約兩小時休息，停車與入住細節以訂房確認信為準。</p><a class="inline-link" href="https://maps.app.goo.gl/tosJdMJWcKMqD6nZA" target="_blank" rel="noreferrer">住宿地圖 ↗</a></div></li>
+              <li><time>17:20</time><div><h4>羅東夜市・早逛早回</h4><p>17:45–19:00 只選 2–3 攤；超過 10 分鐘不排。夜市各攤自主營業，沒有全場一致時間。</p><div class="link-row"><a href={mapLink('羅東夜市')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.luodongtravel.tw/traffic-parking.html" target="_blank" rel="noreferrer">周邊停車 ↗</a></div></div></li>
+            </ol>
+            <aside class="weather-plan"><div><span aria-hidden="true">☂</span><h4>下雨怎麼辦？</h4></div><p>傳藝改走室內館舍並縮短停留；17:00 仍有雷雨就取消夜市，改飯店休息或可訂位餐廳。</p></aside>
+          </div>
+        </article>
+
+        <article class="day-card" id="day-2">
+          <div class="day-banner day-two">
+            <div><p>DAY 02 · 8/14（五）</p><h3>宜蘭 → 台東</h3><span>穿越蘇花與花東縱谷，安全抵達最重要</span></div>
+            <dl><div><dt>建議出發</dt><dd>06:00</dd></div><div><dt>駕駛</dt><dd>約 5 小時 45 分</dd></div><div><dt>步行</dt><dd>3,000–6,000 步</dd></div></dl>
+          </div>
+          <div class="day-body">
+            <div class="decision-strip"><strong>05:30 決策門檻</strong><span>先看 CWA 與 168；道路有警戒就不進蘇花。早餐請前晚詢問外帶。</span></div>
+            <ol class="timeline">
+              <li><time>06:00</time><div><h4>煙波出發・進蘇花前再查一次</h4><p>確認南澳、和平、崇德及萬里溪橋。不能用前一晚截圖代表早上路況。</p></div></li>
+              <li><time>07:20</time><div><h4>台泥 DAKA／和平・正式休息</h4><p>停 20–30 分鐘，上廁所、補水與伸展；若服務設施尚未開放，改鄰近超商或正式加油站，不在路肩停車。</p><div class="link-row"><a href={mapLink('台泥 DAKA 園區')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.tccdaka.com/tw/" target="_blank" rel="noreferrer">官方網站 ↗</a></div></div></li>
+              <li><time>10:00</time><div><h4>林田山林業文化園區・50 分鐘精華走</h4><p>只走平緩聚落與展館，不登高、不走長步道。常態展館 09:00–17:00，一般散客免預約。</p><div class="link-row"><a href={mapLink('林田山林業文化園區')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://recreation.forest.gov.tw/Forest/RA?typ_id=0500004" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
+              <li><time>11:15</time><div><h4>鳳林／光復午餐</h4><p>找有座位、可先電話訂位的餐廳；12:10 前繼續南下，玉里安排 15 分鐘廁所與換駕駛。</p></div></li>
+              <li><time>15:30</time><div><h4>台東鳳麟庭園渡假會館</h4><p>路況正常預計 15:30–16:30 抵達。實際地址已由住宿地圖定位，仍以訂房單與現場聯絡為準。</p><a class="inline-link" href="https://maps.app.goo.gl/vN5CW4azdQ1uTaes7" target="_blank" rel="noreferrer">住宿地圖 ↗</a></div></li>
+            </ol>
+            <aside class="weather-plan danger"><div><span aria-hidden="true">↯</span><h4>豪雨／管制不是一般雨備</h4></div><p>局部陣雨但道路正常：DAKA 縮短，取消林田山。若有豪雨警報、預警性封閉或搶通時間未定：停止跨區移動，不改走中橫。</p></aside>
+          </div>
+        </article>
+
+        <article class="day-card" id="day-3">
+          <div class="day-banner day-three">
+            <div><p>DAY 03 · 8/15（六）</p><h3>台東 → 墾丁</h3><span>南迴海景、海生館與恆春老街</span></div>
+            <dl><div><dt>出發</dt><dd>07:20</dd></div><div><dt>駕駛</dt><dd>約 3 小時</dd></div><div><dt>雨備</dt><dd>海生館</dd></div></dl>
+          </div>
+          <div class="day-body">
+            <ol class="timeline">
+              <li><time>07:20</time><div><h4>台東住宿出發</h4><p>前一晚加滿油、早餐先備好；進南迴前確認台 9 與台 26 路況。</p></div></li>
+              <li><time>08:20</time><div><h4>多良火車站・30 分鐘上限</h4><p>08:00–17:00、清潔費每人 NT$10、散客免預約。找停車超過 10 分鐘或強風雷雨就直接跳過。</p><div class="link-row"><a href={mapLink('多良火車站')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://tour.taitung.gov.tw/zh-tw/Attraction/Details/429" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
+              <li><time>10:40</time><div><h4>國立海洋生物博物館・午餐也在館內</h4><p>停留至 14:40。7–8 月 09:00–18:00，17:00 停止售票入館；三人自由參觀免預約，建議先網路購票，小客車停車 NT$50。</p><ul class="fact-row" aria-label="海生館資訊" tabindex="0"><li>室內主行程</li><li>週六正常開館</li><li>可線上購票</li><li>停車 NT$50</li></ul><div class="link-row"><a href={mapLink('國立海洋生物博物館')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.nmmba.gov.tw/cp.aspx?n=A6476B49BA86BBD5&s=B3CCAAE6060F5DB7" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
+              <li><time>15:00</time><div><h4>恆春古城・老街小圈</h4><p>只走南門／西門與老街 30–45 分鐘，不追四座城門；找合法車位超過 10 分鐘就取消。</p><div class="link-row"><a href={mapLink('恆春古城南門')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.ktnp.gov.tw/News_Content2.aspx?n=5C28A0E32DF925F9&sms=C88B5251F308CE96&s=22486EF6EB59B864" target="_blank" rel="noreferrer">官方景點 ↗</a></div></div></li>
+              <li><time>16:20</time><div><h4>美芳旅店・停好車後不再移車</h4><p>先確認保留車位、卸行李與隔日提早退房方式；晚上步行逛墾丁大街，排隊就換店。</p><a class="inline-link" href="https://maps.app.goo.gl/CeZLdV8gjQNRaLgV7" target="_blank" rel="noreferrer">住宿地圖 ↗</a></div></li>
+            </ol>
+            <div class="option-grid">
+              <aside class="weather-plan"><div><span aria-hidden="true">☂</span><h4>雨天版本</h4></div><p>取消多良與古城，延長海生館到約 16:00；仍有時間可改墾丁國家公園遊客中心（09:00–17:00）。</p><a href="https://www.ktnp.gov.tw/cp.aspx?n=D7B9F1DAF6192D32" target="_blank" rel="noreferrer">遊客中心資訊 ↗</a></aside>
+              <aside class="weather-plan sunny"><div><span aria-hidden="true">☀</span><h4>晴天踏青替代</h4></div><p>想看海岸草原時，以龍磐公園 20–30 分鐘<strong>取代</strong>恆春古城；不再加鵝鑾鼻，避免回頭路。</p><a href="https://www.ktnp.gov.tw/ParkingInfo.aspx?n=A4FF6E419748B427&sms=36A0BB334ECB4011" target="_blank" rel="noreferrer">即時停車資訊 ↗</a></aside>
+            </div>
+          </div>
+        </article>
+
+        <article class="day-card" id="day-4">
+          <div class="day-banner day-four">
+            <div><p>DAY 04 · 8/16（日）</p><h3>墾丁 → 關渡</h3><span>唯一行程：在週日尖峰前安全回家</span></div>
+            <dl><div><dt>退房完成</dt><dd>06:15</dd></div><div><dt>距離</dt><dd>約 457 公里</dd></div><div><dt>總時程</dt><dd>預留 7–8 小時</dd></div></dl>
+          </div>
+          <div class="day-body">
+            <div class="decision-strip"><strong>06:15 前出發準備完成</strong><span>06:30 最晚離開墾丁；不排景點、不去美濃，目標下午尖峰前通過中部。</span></div>
+            <ol class="timeline">
+              <li><time>06:30</time><div><h4>墾丁出發・台 26／台 1 → 南州上國 3</h4><p>不進高雄市區、不走國 1 高雄港末端高架施工區。</p></div></li>
+              <li><time>08:35</time><div><h4>關廟服務區・15–20 分鐘</h4><p>上廁所、伸展、換駕駛。服務區入口若已壅塞，依 1968 改前後合適休息點。</p></div></li>
+              <li><time>10:50</time><div><h4>清水服務區・提早簡單午餐</h4><p>停留不超過 25 分鐘；不要為名店排隊。</p></div></li>
+              <li><time>12:30</time><div><h4>新竹系統前動態選線</h4><p>國 1 湖口至中壢順暢就轉國 1；已呈紅色則留國 3，到土城再依導航走台 65／五股方向。</p></div></li>
+              <li><time>14:00</time><div><h4>預計抵達關渡</h4><p>無事故時約 13:40–14:30 抵達；若晚出發，立即重新評估休息與輪替，不硬撐疲勞駕駛。</p></div></li>
+            </ol>
+            <aside class="traffic-box"><p class="kicker">週日易壅塞</p><h4>國 1 苗栗—湖口 14:00–20:00；國 3 關西—大溪 15:00–19:00</h4><p>8/16 08:00–18:00 國 1 漁港／新生高架部分路段施工；主方案由南州上國 3，可避開施工區。高乘載與匝道儀控仍以前一晚及當日 1968 公告為準。</p><a class="button button-dark" href="https://1968.freeway.gov.tw/" target="_blank" rel="noreferrer">開啟國道 1968 ↗</a></aside>
+          </div>
+        </article>
+      </section>
+
+      <section class="section stays" aria-labelledby="stays-title">
+        <div class="section-heading compact"><p class="eyebrow">STAYS</p><h2 id="stays-title">三晚住宿</h2><p>三間住宿均已預訂並有停車；入住、退房與車位仍以訂房確認信及旅店回覆為準。</p></div>
+        <div class="stay-grid">
+          <a href="https://maps.app.goo.gl/tosJdMJWcKMqD6nZA" target="_blank" rel="noreferrer"><span>8/13 · 宜蘭</span><strong>煙波大飯店<br />宜蘭館</strong><small>開啟地圖 ↗</small></a>
+          <a href="https://maps.app.goo.gl/vN5CW4azdQ1uTaes7" target="_blank" rel="noreferrer"><span>8/14 · 台東</span><strong>鳳麟庭園<br />渡假會館</strong><small>開啟地圖 ↗</small></a>
+          <a href="https://maps.app.goo.gl/CeZLdV8gjQNRaLgV7" target="_blank" rel="noreferrer"><span>8/15 · 墾丁</span><strong>美芳旅店</strong><small>開啟地圖 ↗</small></a>
+        </div>
+      </section>
+
+      <section class="section conditions" aria-labelledby="conditions-title">
+        <div class="section-heading compact"><p class="eyebrow">WEATHER & ROAD</p><h2 id="conditions-title">天氣與道路風險</h2><p>以下為 {updatedAt} 查證結果；短期預報與管制會變動，不能當作出發當刻的通行證。</p></div>
+        <div class="table-wrap" role="region" tabindex="0" aria-label="天氣摘要，可水平捲動">
+          <table>
+            <thead><tr><th>日期</th><th>主要區域</th><th>預報重點</th><th>行程決策</th></tr></thead>
+            <tbody>
+              <tr><td>8/13</td><td>臺北・宜蘭</td><td>高溫、午後雷陣雨；宜蘭約 26–34°C</td><td>夜市依 17:00 雷達決定</td></tr>
+              <tr><td>8/14</td><td>宜蘭・花蓮・台東</td><td>約 25–33°C，紫外線高；午後對流風險</td><td>早過蘇花，雨勢增強就取消林田山</td></tr>
+              <tr><td>8/15</td><td>台東・恆春</td><td>恆春部分時段降雨機率偏高，可能雷雨</td><td>戶外點可全取消，海生館為主</td></tr>
+              <tr><td>8/16</td><td>屏東至臺北</td><td>週日北返車流；午後多段國道易壅塞</td><td>06:30 前離開墾丁</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="data-note">中央氣象署當時顯示既有豪雨特報已解除，但不代表旅程期間不會重新發布；颱風消息也必須於每天出發前重新確認。</p>
+      </section>
+
+      <section class="checklist-section" id="checklist" aria-labelledby="checklist-title">
+        <div class="checklist-copy"><p class="eyebrow">BEFORE YOU GO</p><h2 id="checklist-title">每天出發前，三分鐘完成。</h2><p>不要只看住宿地晴不晴；真正影響跨區移動的是警報、道路管制與即時速度。</p></div>
+        <ol class="checklist">
+          <li><span>1</span><div><h3>看氣象警特報</h3><p>颱風、豪雨、雷達回波與沿途縣市預報。</p><a href="https://www.cwa.gov.tw/" target="_blank" rel="noreferrer">中央氣象署 ↗</a></div></li>
+          <li><span>2</span><div><h3>查省道即時路況</h3><p>台 9 蘇花、萬里溪橋、南迴及台 26；進山區前再查一次。</p><a href="https://168.thb.gov.tw/" target="_blank" rel="noreferrer">幸福公路 168 ↗</a></div></li>
+          <li><span>3</span><div><h3>查國道速度與管制</h3><p>事故、施工、高乘載、匝道儀控及服務區入口車流。</p><a href="https://1968.freeway.gov.tw/" target="_blank" rel="noreferrer">國道 1968 ↗</a></div></li>
+          <li><span>4</span><div><h3>確認全家狀態</h3><p>補水、防曬、雨具、暈車藥；駕駛疲累就換手或加休息點。</p></div></li>
+        </ol>
+      </section>
+
+      <section class="section sources" aria-labelledby="sources-title">
+        <div class="section-heading compact"><p class="eyebrow">SOURCES</p><h2 id="sources-title">查證來源</h2><p>行程資訊以官方機關及景點網站為主，查證於 {updatedAt}；即時狀態仍以出發當刻頁面為準。</p></div>
+        <div class="source-grid">
+          <details><summary>天氣與交通</summary><ul><li><a href="https://www.cwa.gov.tw/V8/C/W/week.html" target="_blank" rel="noreferrer">中央氣象署一週預報</a></li><li><a href="https://www.cwa.gov.tw/V8/C/P/Warning/FIFOWS.html" target="_blank" rel="noreferrer">豪雨特報</a></li><li><a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noreferrer">颱風消息</a></li><li><a href="https://168.thb.gov.tw/" target="_blank" rel="noreferrer">省道即時路況</a></li><li><a href="https://1968.freeway.gov.tw/" target="_blank" rel="noreferrer">國道 1968</a></li><li><a href="https://www.freeway.gov.tw/Publish.aspx?cnid=193&p=44302" target="_blank" rel="noreferrer">8/16 高雄施工公告</a></li></ul></details>
+          <details><summary>宜蘭與花東</summary><ul><li><a href="https://www.px-sunmake.org.tw/info" target="_blank" rel="noreferrer">宜蘭傳藝園區資訊</a></li><li><a href="https://www.luodongtravel.tw/traffic-parking.html" target="_blank" rel="noreferrer">羅東停車資訊</a></li><li><a href="https://www.tccdaka.com/tw/" target="_blank" rel="noreferrer">台泥 DAKA</a></li><li><a href="https://recreation.forest.gov.tw/Forest/RA?typ_id=0500004" target="_blank" rel="noreferrer">林田山林業文化園區</a></li><li><a href="https://tour.taitung.gov.tw/zh-tw/Attraction/Details/429" target="_blank" rel="noreferrer">多良火車站</a></li></ul></details>
+          <details><summary>屏東與墾丁</summary><ul><li><a href="https://www.nmmba.gov.tw/cp.aspx?n=A6476B49BA86BBD5&s=B3CCAAE6060F5DB7" target="_blank" rel="noreferrer">海生館參觀資訊</a></li><li><a href="https://www.ktnp.gov.tw/cp.aspx?n=D7B9F1DAF6192D32" target="_blank" rel="noreferrer">墾丁國家公園遊客中心</a></li><li><a href="https://www.ktnp.gov.tw/ParkingInfo.aspx?n=A4FF6E419748B427&sms=36A0BB334ECB4011" target="_blank" rel="noreferrer">墾丁即時停車</a></li><li><a href="https://www.ktnp.gov.tw/News_Content2.aspx?n=5C28A0E32DF925F9&sms=C88B5251F308CE96&s=C1E50972440D43B2" target="_blank" rel="noreferrer">龍磐公園</a></li></ul></details>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div><strong>2026 家庭環臺旅行</strong><p>把行程留一點空白，才有餘裕照顧彼此。</p></div>
+      <div><span>資料查證</span><time datetime="2026-08-13T01:00:00+08:00">2026/8/13 01:00</time></div>
+    </footer>
+  </body>
+</html>
