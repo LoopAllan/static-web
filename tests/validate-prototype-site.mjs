@@ -41,6 +41,9 @@ assert.deepEqual(pagesConfig, {
 });
 
 const page = await load('src/pages/index.astro');
+const clientScript = await load('src/scripts/prototype.js');
+const styles = await load('src/styles/prototype.css');
+const prototype = `${page}\n${clientScript}\n${styles}`;
 for (const marker of [
   'TossBox · 地圖優先 Prototype',
   'PlaceResolution',
@@ -49,15 +52,35 @@ for (const marker of [
   '其他辨識候選',
   '資料查詢',
   '這是 prototype：不會開啟真實導航',
-]) assert.match(page, new RegExp(escapeRegExp(marker)));
+  '資料為有限模擬資料，重新整理後重設',
+  '新增來源網址',
+  '無法取得更新狀態，請再試一次',
+  '確認此候選',
+  '目前位置（模擬）',
+]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
+for (const marker of [
+  'id="searchDialog"',
+  'role="dialog"',
+  'aria-modal="true"',
+  'data-status="processing"',
+  'data-status="needs-confirmation"',
+  'data-status="failed"',
+  'data-status="confirmed"',
+  'function validateUrl',
+  'function trapFocus',
+  "document.addEventListener('keydown'",
+  "freshness === 'error'",
+  'candidate.confirmed = true',
+  'textContent=',
+]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
 assert.match(page, /<meta name="description"/);
-assert.match(page, /<style is:global>/);
-assert.match(page, /<button class="place-pin selected"/);
+assert.match(page, /import '\.\.\/styles\/prototype\.css'/);
+assert.match(page, /id="pins"/);
 assert.match(page, /data-filter="coffee"/);
-assert.match(page, /detail\.classList\.add\('open'\)/);
+assert.match(clientScript, /openModal\('detail'/);
 assert.match(page, /id="detailReviews"/);
-assert.match(page, /detailReviews'\)\.textContent=p\.reviews/);
-assert.doesNotMatch(page, /googleapis\.com|maps\.google\.com|api[_-]?key/i);
+assert.match(clientScript, /\$\('detailReviews'\)\.textContent=place\.reviews/);
+assert.doesNotMatch(prototype, /googleapis\.com|maps\.google\.com|api[_-]?key/i);
 
 const workflow = await load('.github/workflows/deploy-pages.yml');
 for (const marker of [
