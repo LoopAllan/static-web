@@ -1,40 +1,23 @@
-# Static Web — branch-specific GitHub Pages sites
+# TossBox 地圖優先 Prototype
 
-This repository publishes selected development branches into separate subdirectories of one GitHub Pages project.
+此分支是 TossBox prototype 的獨立 GitHub Pages source branch。
 
-## Current site
+- Source branch: `site/tossbox-prototype-v1`
+- Public slug: `tossbox-prototype-v1`
+- Expected URL: `https://loopallan.github.io/static-web/tossbox-prototype-v1/`
+- Framework: Astro static output
 
-- Source branch: `trip/taiwan-2026-08`
-- Public slug: `taiwan-2026-08`
-- Expected URL: <https://loopallan.github.io/static-web/taiwan-2026-08/>
-- Framework: Astro 7, static output
+## Scope
 
-## Local development
+Prototype verifies a map-first decision flow with confirmed `PlaceResolution` records as the display unit. All place names, images, ratings, addresses, and freshness labels are mock data; this branch does not call TossBox, Google Maps, Google Places, or authentication APIs.
+
+## Local validation
 
 ```bash
 npm ci
-npm run dev
-```
-
-Full verification:
-
-```bash
 npm run validate
 ```
 
-## Publishing architecture
+## Publishing model
 
-The workflow builds the source branch with the configured Astro base path, fetches the latest durable `gh-pages` tree, replaces only the current site's slug directory, regenerates the root site index, and deploys the complete tree.
-
-```text
-gh-pages/
-├── index.html
-├── taiwan-2026-08/
-└── another-site/
-```
-
-Publishing is serialized with a repository-wide concurrency group so two site deployments cannot overwrite each other's read-modify-write operation.
-
-Before the first workflow run, a repository administrator must enable GitHub Pages once and select **GitHub Actions** as the source. The equivalent REST bootstrap is `POST /repos/LoopAllan/static-web/pages` with `{"build_type":"workflow"}`. This administrative credential is intentionally kept out of the recurring deployment workflow; subsequent runs use only the scoped `GITHUB_TOKEN` permissions declared per job.
-
-To add another site, create a branch with its own explicit slug, configure Astro's `base` as `/static-web/<slug>`, add the branch trigger and slug mapping to the workflow, and extend the architecture contract test before implementing the page.
+The repository publishes selected source branches into separate subdirectories of the durable `gh-pages` tree. This branch must not be merged into the Taiwan-trip source branch because doing so would replace that separate site. The deployment workflow preserves every other published slug.

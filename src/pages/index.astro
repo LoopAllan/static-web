@@ -1,220 +1,49 @@
----
-import '../styles/global.css';
-
-const updatedAt = '2026/8/13 01:00（臺灣時間）';
-const mapLink = (query: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
----
-
 <!doctype html>
 <html lang="zh-Hant">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="2026 年 8 月 13 日至 16 日，從關渡出發，經宜蘭、台東、墾丁返臺北的四天三夜家庭自駕行程。" />
-    <meta name="theme-color" content="#fffaf5" />
-    <title>2026 家庭環臺旅行｜四天三夜自駕</title>
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到主要內容</a>
-
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href="#top" aria-label="回到頁首">
-          <span class="brand-mark" aria-hidden="true">島</span>
-          <span>家庭環臺旅行</span>
-        </a>
-        <nav aria-label="行程快速導覽">
-          <a href="#day-1">宜蘭</a>
-          <a href="#day-2">台東</a>
-          <a href="#day-3">墾丁</a>
-          <a href="#day-4">返北</a>
-          <a href="#checklist">出發檢查</a>
-        </nav>
-      </div>
-    </header>
-
-    <main id="main-content">
-      <section class="hero" id="top" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow">2026 · FAMILY ROAD TRIP</p>
-          <h1 id="hero-title">沿著海岸與縱谷，<br /><span>慢慢繞臺灣一圈。</span></h1>
-          <p class="hero-lede">四天三夜、三人自駕。行程特別為 50 多歲父母調整：少排隊、少繞路、每天保留午休與臨時取消的餘裕。</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#day-1">查看每日行程</a>
-            <a class="button button-secondary" href="#checklist">先看安全門檻</a>
-          </div>
-        </div>
-        <div class="route-art" role="img" aria-label="關渡、宜蘭、台東、墾丁、關渡環狀路線示意">
-          <div class="route-line" aria-hidden="true"></div>
-          <ol>
-            <li class="route-taipei"><span>01</span><strong>關渡</strong><small>出發</small></li>
-            <li class="route-yilan"><span>02</span><strong>宜蘭</strong><small>老街・傳藝</small></li>
-            <li class="route-taitung"><span>03</span><strong>台東</strong><small>縱谷・南迴</small></li>
-            <li class="route-kenting"><span>04</span><strong>墾丁</strong><small>海洋・古城</small></li>
-          </ol>
-        </div>
-      </section>
-
-      <section class="alert-card" aria-labelledby="alert-title">
-        <div class="alert-icon" aria-hidden="true">!</div>
-        <div>
-          <p class="kicker">這趟旅程最重要的規則</p>
-          <h2 id="alert-title">出現預警性封閉就停止跨區移動</h2>
-          <p>蘇花或南迴若顯示道路中斷、只出不進、搶通時間未定，或相關縣市發布豪雨／陸上颱風警報，不到管制點等待，也不改走中橫等高風險替代線。</p>
-        </div>
-        <div class="alert-links">
-          <a href="https://168.thb.gov.tw/" target="_blank" rel="noreferrer">查省道 168 ↗</a>
-          <a href="https://www.cwa.gov.tw/" target="_blank" rel="noreferrer">查中央氣象署 ↗</a>
-        </div>
-      </section>
-
-      <section class="summary-grid" aria-label="旅程摘要">
-        <article><span class="summary-icon" aria-hidden="true">4</span><div><strong>四天三夜</strong><small>8/13（四）— 8/16（日）</small></div></article>
-        <article><span class="summary-icon" aria-hidden="true">3</span><div><strong>三人自駕</strong><small>父母同行・輪替駕駛</small></div></article>
-        <article><span class="summary-icon" aria-hidden="true">↗</span><div><strong>約 1,000 公里</strong><small>長途日以休息優先</small></div></article>
-        <article><span class="summary-icon" aria-hidden="true">✓</span><div><strong>每日低於 2 萬步</strong><small>景點採精華短走</small></div></article>
-      </section>
-
-      <section class="section intro-section" aria-labelledby="plan-title">
-        <div class="section-heading">
-          <p class="eyebrow">THE PLAN</p>
-          <h2 id="plan-title">不是塞滿景點，<br />而是每天都能舒服抵達。</h2>
-          <p>熱門攤位排超過 10 分鐘就換店；停車找超過 10 分鐘就跳過景點。下雨不是硬撐的理由，而是切換室內方案的訊號。</p>
-        </div>
-        <div class="principles">
-          <article><span>01</span><h3>早出發</h3><p>蘇花、南迴及週日北返都在午後車流或對流前通過。</p></article>
-          <article><span>02</span><h3>只留主角</h3><p>每段只排一個主要景點，其餘停靠都可以取消。</p></article>
-          <article><span>03</span><h3>停車先決</h3><p>不繞圈找路邊位，優先旅店車位、正式停車場與服務區。</p></article>
-        </div>
-      </section>
-
-      <section class="itinerary" aria-labelledby="itinerary-title">
-        <div class="section-heading compact">
-          <p class="eyebrow">DAY BY DAY</p>
-          <h2 id="itinerary-title">四天行程</h2>
-        </div>
-
-        <article class="day-card" id="day-1">
-          <div class="day-banner day-one">
-            <div><p>DAY 01 · 8/13（四）</p><h3>關渡 → 宜蘭</h3><span>傳統街屋、慢逛與提早吃夜市</span></div>
-            <dl><div><dt>出發</dt><dd>10:00</dd></div><div><dt>駕駛</dt><dd>約 2 小時</dd></div><div><dt>步行</dt><dd>8,000–13,000 步</dd></div></dl>
-          </div>
-          <div class="day-body">
-            <ol class="timeline">
-              <li><time>10:00</time><div><h4>關渡出發</h4><p>出發前看國 5 與宜蘭雷達回波；國五壅塞時，傳藝停留時間直接縮短。</p></div></li>
-              <li><time>11:30</time><div><h4>宜蘭傳藝園區・先午餐再逛</h4><p>12:15–14:30 走文昌街、魯班街與室內展館，少量購物，不追滿場表演。</p><ul class="fact-row" aria-label="宜蘭傳藝資訊" tabindex="0"><li>09:00–18:00</li><li>一般票 NT$150</li><li>停車當日最高 NT$60</li><li>散客免預約</li></ul><div class="link-row"><a href={mapLink('宜蘭傳藝園區')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.px-sunmake.org.tw/info" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
-              <li><time>15:00</time><div><h4>煙波大飯店宜蘭館・入住與午休</h4><p>預留約兩小時休息，停車與入住細節以訂房確認信為準。</p><a class="inline-link" href="https://maps.app.goo.gl/tosJdMJWcKMqD6nZA" target="_blank" rel="noreferrer">住宿地圖 ↗</a></div></li>
-              <li><time>17:20</time><div><h4>羅東夜市・早逛早回</h4><p>17:45–19:00 只選 2–3 攤；超過 10 分鐘不排。夜市各攤自主營業，沒有全場一致時間。</p><div class="link-row"><a href={mapLink('羅東夜市')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.luodongtravel.tw/traffic-parking.html" target="_blank" rel="noreferrer">周邊停車 ↗</a></div></div></li>
-            </ol>
-            <aside class="weather-plan"><div><span aria-hidden="true">☂</span><h4>下雨怎麼辦？</h4></div><p>傳藝改走室內館舍並縮短停留；17:00 仍有雷雨就取消夜市，改飯店休息或可訂位餐廳。</p></aside>
-          </div>
-        </article>
-
-        <article class="day-card" id="day-2">
-          <div class="day-banner day-two">
-            <div><p>DAY 02 · 8/14（五）</p><h3>宜蘭 → 台東</h3><span>穿越蘇花與花東縱谷，安全抵達最重要</span></div>
-            <dl><div><dt>建議出發</dt><dd>06:00</dd></div><div><dt>駕駛</dt><dd>約 5 小時 45 分</dd></div><div><dt>步行</dt><dd>3,000–6,000 步</dd></div></dl>
-          </div>
-          <div class="day-body">
-            <div class="decision-strip"><strong>05:30 決策門檻</strong><span>先看 CWA 與 168；道路有警戒就不進蘇花。早餐請前晚詢問外帶。</span></div>
-            <ol class="timeline">
-              <li><time>06:00</time><div><h4>煙波出發・進蘇花前再查一次</h4><p>確認南澳、和平、崇德及萬里溪橋。不能用前一晚截圖代表早上路況。</p></div></li>
-              <li><time>07:20</time><div><h4>台泥 DAKA／和平・正式休息</h4><p>停 20–30 分鐘，上廁所、補水與伸展；若服務設施尚未開放，改鄰近超商或正式加油站，不在路肩停車。</p><div class="link-row"><a href={mapLink('台泥 DAKA 園區')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.tccdaka.com/tw/" target="_blank" rel="noreferrer">官方網站 ↗</a></div></div></li>
-              <li><time>10:00</time><div><h4>林田山林業文化園區・50 分鐘精華走</h4><p>只走平緩聚落與展館，不登高、不走長步道。常態展館 09:00–17:00，一般散客免預約。</p><div class="link-row"><a href={mapLink('林田山林業文化園區')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://recreation.forest.gov.tw/Forest/RA?typ_id=0500004" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
-              <li><time>11:15</time><div><h4>鳳林／光復午餐</h4><p>找有座位、可先電話訂位的餐廳；12:10 前繼續南下，玉里安排 15 分鐘廁所與換駕駛。</p></div></li>
-              <li><time>15:30</time><div><h4>台東鳳麟庭園渡假會館</h4><p>路況正常預計 15:30–16:30 抵達。實際地址已由住宿地圖定位，仍以訂房單與現場聯絡為準。</p><a class="inline-link" href="https://maps.app.goo.gl/vN5CW4azdQ1uTaes7" target="_blank" rel="noreferrer">住宿地圖 ↗</a></div></li>
-            </ol>
-            <aside class="weather-plan danger"><div><span aria-hidden="true">↯</span><h4>豪雨／管制不是一般雨備</h4></div><p>局部陣雨但道路正常：DAKA 縮短，取消林田山。若有豪雨警報、預警性封閉或搶通時間未定：停止跨區移動，不改走中橫。</p></aside>
-          </div>
-        </article>
-
-        <article class="day-card" id="day-3">
-          <div class="day-banner day-three">
-            <div><p>DAY 03 · 8/15（六）</p><h3>台東 → 墾丁</h3><span>南迴海景、海生館與恆春老街</span></div>
-            <dl><div><dt>出發</dt><dd>07:20</dd></div><div><dt>駕駛</dt><dd>約 3 小時</dd></div><div><dt>雨備</dt><dd>海生館</dd></div></dl>
-          </div>
-          <div class="day-body">
-            <ol class="timeline">
-              <li><time>07:20</time><div><h4>台東住宿出發</h4><p>前一晚加滿油、早餐先備好；進南迴前確認台 9 與台 26 路況。</p></div></li>
-              <li><time>08:20</time><div><h4>多良火車站・30 分鐘上限</h4><p>08:00–17:00、清潔費每人 NT$10、散客免預約。找停車超過 10 分鐘或強風雷雨就直接跳過。</p><div class="link-row"><a href={mapLink('多良火車站')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://tour.taitung.gov.tw/zh-tw/Attraction/Details/429" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
-              <li><time>10:40</time><div><h4>國立海洋生物博物館・午餐也在館內</h4><p>停留至 14:40。7–8 月 09:00–18:00，17:00 停止售票入館；三人自由參觀免預約，建議先網路購票，小客車停車 NT$50。</p><ul class="fact-row" aria-label="海生館資訊" tabindex="0"><li>室內主行程</li><li>週六正常開館</li><li>可線上購票</li><li>停車 NT$50</li></ul><div class="link-row"><a href={mapLink('國立海洋生物博物館')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.nmmba.gov.tw/cp.aspx?n=A6476B49BA86BBD5&s=B3CCAAE6060F5DB7" target="_blank" rel="noreferrer">官方資訊 ↗</a></div></div></li>
-              <li><time>15:00</time><div><h4>恆春古城・老街小圈</h4><p>只走南門／西門與老街 30–45 分鐘，不追四座城門；找合法車位超過 10 分鐘就取消。</p><div class="link-row"><a href={mapLink('恆春古城南門')} target="_blank" rel="noreferrer">地圖導航 ↗</a><a href="https://www.ktnp.gov.tw/News_Content2.aspx?n=5C28A0E32DF925F9&sms=C88B5251F308CE96&s=22486EF6EB59B864" target="_blank" rel="noreferrer">官方景點 ↗</a></div></div></li>
-              <li><time>16:20</time><div><h4>美芳旅店・停好車後不再移車</h4><p>先確認保留車位、卸行李與隔日提早退房方式；晚上步行逛墾丁大街，排隊就換店。</p><a class="inline-link" href="https://maps.app.goo.gl/CeZLdV8gjQNRaLgV7" target="_blank" rel="noreferrer">住宿地圖 ↗</a></div></li>
-            </ol>
-            <div class="option-grid">
-              <aside class="weather-plan"><div><span aria-hidden="true">☂</span><h4>雨天版本</h4></div><p>取消多良與古城，延長海生館到約 16:00；仍有時間可改墾丁國家公園遊客中心（09:00–17:00）。</p><a href="https://www.ktnp.gov.tw/cp.aspx?n=D7B9F1DAF6192D32" target="_blank" rel="noreferrer">遊客中心資訊 ↗</a></aside>
-              <aside class="weather-plan sunny"><div><span aria-hidden="true">☀</span><h4>晴天踏青替代</h4></div><p>想看海岸草原時，以龍磐公園 20–30 分鐘<strong>取代</strong>恆春古城；不再加鵝鑾鼻，避免回頭路。</p><a href="https://www.ktnp.gov.tw/ParkingInfo.aspx?n=A4FF6E419748B427&sms=36A0BB334ECB4011" target="_blank" rel="noreferrer">即時停車資訊 ↗</a></aside>
-            </div>
-          </div>
-        </article>
-
-        <article class="day-card" id="day-4">
-          <div class="day-banner day-four">
-            <div><p>DAY 04 · 8/16（日）</p><h3>墾丁 → 關渡</h3><span>唯一行程：在週日尖峰前安全回家</span></div>
-            <dl><div><dt>退房完成</dt><dd>06:15</dd></div><div><dt>距離</dt><dd>約 457 公里</dd></div><div><dt>總時程</dt><dd>預留 7–8 小時</dd></div></dl>
-          </div>
-          <div class="day-body">
-            <div class="decision-strip"><strong>06:15 前出發準備完成</strong><span>06:30 最晚離開墾丁；不排景點、不去美濃，目標下午尖峰前通過中部。</span></div>
-            <ol class="timeline">
-              <li><time>06:30</time><div><h4>墾丁出發・台 26／台 1 → 南州上國 3</h4><p>不進高雄市區、不走國 1 高雄港末端高架施工區。</p></div></li>
-              <li><time>08:35</time><div><h4>關廟服務區・15–20 分鐘</h4><p>上廁所、伸展、換駕駛。服務區入口若已壅塞，依 1968 改前後合適休息點。</p></div></li>
-              <li><time>10:50</time><div><h4>清水服務區・提早簡單午餐</h4><p>停留不超過 25 分鐘；不要為名店排隊。</p></div></li>
-              <li><time>12:30</time><div><h4>新竹系統前動態選線</h4><p>國 1 湖口至中壢順暢就轉國 1；已呈紅色則留國 3，到土城再依導航走台 65／五股方向。</p></div></li>
-              <li><time>14:00</time><div><h4>預計抵達關渡</h4><p>無事故時約 13:40–14:30 抵達；若晚出發，立即重新評估休息與輪替，不硬撐疲勞駕駛。</p></div></li>
-            </ol>
-            <aside class="traffic-box"><p class="kicker">週日易壅塞</p><h4>國 1 苗栗—湖口 14:00–20:00；國 3 關西—大溪 15:00–19:00</h4><p>8/16 08:00–18:00 國 1 漁港／新生高架部分路段施工；主方案由南州上國 3，可避開施工區。高乘載與匝道儀控仍以前一晚及當日 1968 公告為準。</p><a class="button button-dark" href="https://1968.freeway.gov.tw/" target="_blank" rel="noreferrer">開啟國道 1968 ↗</a></aside>
-          </div>
-        </article>
-      </section>
-
-      <section class="section stays" aria-labelledby="stays-title">
-        <div class="section-heading compact"><p class="eyebrow">STAYS</p><h2 id="stays-title">三晚住宿</h2><p>三間住宿均已預訂並有停車；入住、退房與車位仍以訂房確認信及旅店回覆為準。</p></div>
-        <div class="stay-grid">
-          <a href="https://maps.app.goo.gl/tosJdMJWcKMqD6nZA" target="_blank" rel="noreferrer"><span>8/13 · 宜蘭</span><strong>煙波大飯店<br />宜蘭館</strong><small>開啟地圖 ↗</small></a>
-          <a href="https://maps.app.goo.gl/vN5CW4azdQ1uTaes7" target="_blank" rel="noreferrer"><span>8/14 · 台東</span><strong>鳳麟庭園<br />渡假會館</strong><small>開啟地圖 ↗</small></a>
-          <a href="https://maps.app.goo.gl/CeZLdV8gjQNRaLgV7" target="_blank" rel="noreferrer"><span>8/15 · 墾丁</span><strong>美芳旅店</strong><small>開啟地圖 ↗</small></a>
-        </div>
-      </section>
-
-      <section class="section conditions" aria-labelledby="conditions-title">
-        <div class="section-heading compact"><p class="eyebrow">WEATHER & ROAD</p><h2 id="conditions-title">天氣與道路風險</h2><p>以下為 {updatedAt} 查證結果；短期預報與管制會變動，不能當作出發當刻的通行證。</p></div>
-        <div class="table-wrap" role="region" tabindex="0" aria-label="天氣摘要，可水平捲動">
-          <table>
-            <thead><tr><th>日期</th><th>主要區域</th><th>預報重點</th><th>行程決策</th></tr></thead>
-            <tbody>
-              <tr><td>8/13</td><td>臺北・宜蘭</td><td>高溫、午後雷陣雨；宜蘭約 26–34°C</td><td>夜市依 17:00 雷達決定</td></tr>
-              <tr><td>8/14</td><td>宜蘭・花蓮・台東</td><td>約 25–33°C，紫外線高；午後對流風險</td><td>早過蘇花，雨勢增強就取消林田山</td></tr>
-              <tr><td>8/15</td><td>台東・恆春</td><td>恆春部分時段降雨機率偏高，可能雷雨</td><td>戶外點可全取消，海生館為主</td></tr>
-              <tr><td>8/16</td><td>屏東至臺北</td><td>週日北返車流；午後多段國道易壅塞</td><td>06:30 前離開墾丁</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="data-note">中央氣象署當時顯示既有豪雨特報已解除，但不代表旅程期間不會重新發布；颱風消息也必須於每天出發前重新確認。</p>
-      </section>
-
-      <section class="checklist-section" id="checklist" aria-labelledby="checklist-title">
-        <div class="checklist-copy"><p class="eyebrow">BEFORE YOU GO</p><h2 id="checklist-title">每天出發前，三分鐘完成。</h2><p>不要只看住宿地晴不晴；真正影響跨區移動的是警報、道路管制與即時速度。</p></div>
-        <ol class="checklist">
-          <li><span>1</span><div><h3>看氣象警特報</h3><p>颱風、豪雨、雷達回波與沿途縣市預報。</p><a href="https://www.cwa.gov.tw/" target="_blank" rel="noreferrer">中央氣象署 ↗</a></div></li>
-          <li><span>2</span><div><h3>查省道即時路況</h3><p>台 9 蘇花、萬里溪橋、南迴及台 26；進山區前再查一次。</p><a href="https://168.thb.gov.tw/" target="_blank" rel="noreferrer">幸福公路 168 ↗</a></div></li>
-          <li><span>3</span><div><h3>查國道速度與管制</h3><p>事故、施工、高乘載、匝道儀控及服務區入口車流。</p><a href="https://1968.freeway.gov.tw/" target="_blank" rel="noreferrer">國道 1968 ↗</a></div></li>
-          <li><span>4</span><div><h3>確認全家狀態</h3><p>補水、防曬、雨具、暈車藥；駕駛疲累就換手或加休息點。</p></div></li>
-        </ol>
-      </section>
-
-      <section class="section sources" aria-labelledby="sources-title">
-        <div class="section-heading compact"><p class="eyebrow">SOURCES</p><h2 id="sources-title">查證來源</h2><p>行程資訊以官方機關及景點網站為主，查證於 {updatedAt}；即時狀態仍以出發當刻頁面為準。</p></div>
-        <div class="source-grid">
-          <details><summary>天氣與交通</summary><ul><li><a href="https://www.cwa.gov.tw/V8/C/W/week.html" target="_blank" rel="noreferrer">中央氣象署一週預報</a></li><li><a href="https://www.cwa.gov.tw/V8/C/P/Warning/FIFOWS.html" target="_blank" rel="noreferrer">豪雨特報</a></li><li><a href="https://www.cwa.gov.tw/V8/C/P/Typhoon/TY_NEWS.html" target="_blank" rel="noreferrer">颱風消息</a></li><li><a href="https://168.thb.gov.tw/" target="_blank" rel="noreferrer">省道即時路況</a></li><li><a href="https://1968.freeway.gov.tw/" target="_blank" rel="noreferrer">國道 1968</a></li><li><a href="https://www.freeway.gov.tw/Publish.aspx?cnid=193&p=44302" target="_blank" rel="noreferrer">8/16 高雄施工公告</a></li></ul></details>
-          <details><summary>宜蘭與花東</summary><ul><li><a href="https://www.px-sunmake.org.tw/info" target="_blank" rel="noreferrer">宜蘭傳藝園區資訊</a></li><li><a href="https://www.luodongtravel.tw/traffic-parking.html" target="_blank" rel="noreferrer">羅東停車資訊</a></li><li><a href="https://www.tccdaka.com/tw/" target="_blank" rel="noreferrer">台泥 DAKA</a></li><li><a href="https://recreation.forest.gov.tw/Forest/RA?typ_id=0500004" target="_blank" rel="noreferrer">林田山林業文化園區</a></li><li><a href="https://tour.taitung.gov.tw/zh-tw/Attraction/Details/429" target="_blank" rel="noreferrer">多良火車站</a></li></ul></details>
-          <details><summary>屏東與墾丁</summary><ul><li><a href="https://www.nmmba.gov.tw/cp.aspx?n=A6476B49BA86BBD5&s=B3CCAAE6060F5DB7" target="_blank" rel="noreferrer">海生館參觀資訊</a></li><li><a href="https://www.ktnp.gov.tw/cp.aspx?n=D7B9F1DAF6192D32" target="_blank" rel="noreferrer">墾丁國家公園遊客中心</a></li><li><a href="https://www.ktnp.gov.tw/ParkingInfo.aspx?n=A4FF6E419748B427&sms=36A0BB334ECB4011" target="_blank" rel="noreferrer">墾丁即時停車</a></li><li><a href="https://www.ktnp.gov.tw/News_Content2.aspx?n=5C28A0E32DF925F9&sms=C88B5251F308CE96&s=C1E50972440D43B2" target="_blank" rel="noreferrer">龍磐公園</a></li></ul></details>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div><strong>2026 家庭環臺旅行</strong><p>把行程留一點空白，才有餘裕照顧彼此。</p></div>
-      <div><span>資料查證</span><time datetime="2026-08-13T01:00:00+08:00">2026/8/13 01:00</time></div>
-    </footer>
-  </body>
-</html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TossBox · 地圖優先 Prototype</title>
+<meta name="description" content="TossBox 地圖優先 PlaceResolution 收藏決策流程 prototype。" />
+<style>
+:root{--ink:#1c2824;--muted:#6e7773;--paper:#faf8f2;--panel:#fffdf8;--line:#e9e4d9;--lime:#d8f26b;--mint:#bceee4;--pink:#ffa8ab;--orange:#ffca75;--violet:#c8b8ff;--shadow:0 14px 40px rgba(40,47,42,.13)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;color:var(--ink);background:#e4eee8;overflow:hidden}.app{height:100dvh;position:relative;background:#dce8df}.map{position:absolute;inset:0;overflow:hidden;background:linear-gradient(130deg,#d9eadf,#e9efdc 57%,#cfdfd5)}
+.map:before,.map:after{content:"";position:absolute;inset:-12%;background:repeating-linear-gradient(23deg,transparent 0 76px,rgba(255,255,252,.78) 77px 84px,transparent 85px 160px),repeating-linear-gradient(112deg,transparent 0 95px,rgba(255,255,255,.65) 96px 104px,transparent 105px 190px);transform:rotate(-4deg);opacity:.92}.river{position:absolute;left:23%;top:-10%;height:125%;width:74px;background:#bce0e2;border:9px solid rgba(255,255,255,.35);transform:rotate(24deg);border-radius:50%}.district{position:absolute;border-radius:50%;background:rgba(168,221,191,.45);filter:blur(1px)}.d1{width:280px;height:160px;top:32%;left:20%}.d2{width:210px;height:150px;top:10%;right:7%}.d3{width:270px;height:160px;bottom:-4%;left:43%}.label{position:absolute;color:#61706a;font-size:12px;font-weight:800;letter-spacing:.08em}.label.one{top:21%;left:12%}.label.two{top:22%;right:16%}.label.three{bottom:26%;right:12%}.label.four{bottom:34%;left:27%}
+.topbar{position:absolute;top:18px;left:18px;right:18px;display:flex;gap:10px;align-items:center;z-index:10}.brand{width:46px;height:46px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:900;box-shadow:var(--shadow);letter-spacing:-.08em}.search{height:48px;flex:1;border-radius:16px;border:1px solid rgba(255,255,255,.8);background:rgba(255,253,248,.94);display:flex;align-items:center;gap:10px;padding:0 15px;box-shadow:0 8px 25px rgba(46,58,49,.12);font-size:14px;font-weight:700}.search svg{width:19px;color:#647069}.search small{margin-left:auto;color:var(--muted);font-weight:600}.avatar{height:46px;width:46px;border-radius:16px;border:1px solid rgba(255,255,255,.9);background:linear-gradient(135deg,#ffc4a9,#f5dfb1);box-shadow:var(--shadow);display:grid;place-items:center;font-size:20px}
+.controls{position:absolute;left:18px;right:18px;top:78px;z-index:9;display:flex;gap:8px;overflow:auto;padding-bottom:4px;scrollbar-width:none}.chip{border:1px solid rgba(255,255,255,.9);background:rgba(255,253,248,.93);color:#53615a;border-radius:999px;height:36px;padding:0 14px;white-space:nowrap;font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:7px;box-shadow:0 5px 18px rgba(45,56,49,.08);cursor:pointer}.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--lime)}
+.locate{position:absolute;right:18px;top:130px;width:47px;height:47px;border:0;border-radius:16px;background:var(--panel);box-shadow:var(--shadow);font-size:20px;cursor:pointer}.place-pin{position:absolute;z-index:5;transform:translate(-50%,-100%);border:0;background:transparent;cursor:pointer;padding:0}.pin-dot{width:42px;height:42px;border:3px solid #fff;border-radius:17px 17px 17px 4px;transform:rotate(-45deg);box-shadow:0 8px 16px rgba(46,51,41,.22);display:grid;place-items:center}.pin-dot span{transform:rotate(45deg);font-size:17px}.pin-dot.mint{background:var(--mint)}.pin-dot.pink{background:var(--pink)}.pin-dot.orange{background:var(--orange)}.pin-dot.violet{background:var(--violet)}.place-pin.selected .pin-dot{outline:4px solid rgba(28,40,36,.22);transform:rotate(-45deg) scale(1.15)}.pin-note{position:absolute;top:48px;left:15px;transform:translateX(-25%);padding:7px 9px;border-radius:10px;background:#fffdf8;box-shadow:0 5px 14px rgba(0,0,0,.12);white-space:nowrap;font-size:12px;font-weight:900;opacity:0;transition:.2s}.place-pin.selected .pin-note{opacity:1}
+.status{position:absolute;top:143px;left:18px;z-index:4;padding:9px 11px;border-radius:12px;background:rgba(255,253,248,.88);font-size:12px;font-weight:800;color:#5c6861;box-shadow:0 4px 14px rgba(45,56,49,.08)}.status b{color:#2f6a58}
+.sheet{position:absolute;z-index:20;bottom:0;left:0;right:0;background:rgba(255,253,248,.98);border-radius:26px 26px 0 0;box-shadow:0 -12px 45px rgba(34,48,39,.18);padding:9px 18px max(18px,env(safe-area-inset-bottom));max-height:56dvh;transition:transform .28s ease}.grab{width:42px;height:5px;border-radius:99px;background:#dad5ca;margin:0 auto 14px}.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;color:#728078}.title{font-size:21px;font-weight:900;letter-spacing:-.035em;margin-top:2px}.count{font-size:12px;border-radius:99px;background:#ebf1df;padding:7px 10px;color:#54603e;font-weight:900}.cards{display:flex;gap:11px;overflow-x:auto;padding:1px 0 2px;scrollbar-width:none}.card{min-width:260px;width:260px;border:1px solid var(--line);background:white;border-radius:18px;padding:10px;display:grid;grid-template-columns:74px 1fr;gap:11px;cursor:pointer;transition:.18s}.card:hover,.card.active{border-color:#a9c486;box-shadow:0 8px 20px rgba(63,86,57,.1);transform:translateY(-2px)}.thumb{height:74px;border-radius:13px;position:relative;overflow:hidden;background:linear-gradient(145deg,#f6c59c,#cc7b59 46%,#844638)}.thumb.coffee{background:radial-gradient(circle at 62% 38%,#f7d3a4 0 10%,transparent 11%),linear-gradient(120deg,#a65932,#efaa67 52%,#51301e)}.thumb.sweet{background:radial-gradient(circle at 35% 30%,#fff2d3 0 11%,transparent 12%),radial-gradient(circle at 63% 55%,#e88486 0 16%,transparent 17%),linear-gradient(130deg,#fbcbcb,#f4a2a6)}.thumb.walk{background:linear-gradient(145deg,#7eb78c,#d9e6ad 47%,#6fa0a0)}.thumb:after{content:"來源貼文";position:absolute;bottom:5px;left:5px;border-radius:6px;background:rgba(24,35,28,.7);padding:3px 5px;color:#fff;font-size:8px;font-weight:800}.card h3{margin:1px 0 5px;font-size:15px;line-height:1.2;letter-spacing:-.02em}.card p{margin:0;color:var(--muted);font-size:12px;line-height:1.35}.meta{margin-top:6px;display:flex;gap:5px;align-items:center;color:#59665e;font-size:11px;font-weight:800}.meta strong{color:#2d6959}.fresh{margin-left:auto;color:#6f766c;font-weight:700}.sheet.expanded{max-height:81dvh}.sheet.expanded .cards{display:grid;grid-template-columns:1fr 1fr;max-height:52dvh;overflow:auto;padding:3px}.sheet.expanded .card{width:auto;min-width:0}.expand{border:0;background:transparent;font-size:13px;font-weight:900;color:#47735f;cursor:pointer}
+.detail{position:absolute;z-index:40;inset:0;background:rgba(20,27,24,.38);display:none;align-items:flex-end}.detail.open{display:flex}.detail-panel{width:100%;max-height:88dvh;overflow:auto;background:#fffdf8;border-radius:28px 28px 0 0;box-shadow:0 -10px 50px rgba(0,0,0,.22);padding:10px 18px 34px}.hero{height:200px;border-radius:19px;background:linear-gradient(135deg,#d8834d 0 32%,#f1c582 33% 61%,#793e2d 62%);position:relative;overflow:hidden}.hero:before{content:"";position:absolute;width:180px;height:180px;border:20px solid rgba(255,232,192,.72);border-radius:50%;bottom:-105px;right:-20px}.hero:after{content:"地點照片\A 模擬資料";white-space:pre;position:absolute;bottom:13px;left:13px;padding:6px 8px;background:rgba(22,30,25,.72);border-radius:8px;color:#fff;font-size:11px;font-weight:800}.close{position:absolute;right:30px;margin-top:11px;width:36px;height:36px;border:0;border-radius:12px;background:rgba(255,253,248,.94);font-size:21px;z-index:2;cursor:pointer}.detail-top{padding:16px 1px 8px}.detail-title{font-size:27px;letter-spacing:-.05em;margin:4px 0 7px}.detail-sub{color:var(--muted);font-size:14px;margin:0}.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:17px 0}.fact{border-radius:13px;background:#f3f1eb;padding:10px;font-size:12px;color:#617068}.fact b{display:block;color:var(--ink);font-size:14px;margin-bottom:3px}.section{border-top:1px solid var(--line);padding:15px 0}.section h4{margin:0 0 8px;font-size:14px}.source{display:flex;gap:10px;align-items:center;padding:10px;border-radius:14px;background:#fff5eb}.source i{font-style:normal;width:35px;height:35px;border-radius:11px;background:linear-gradient(135deg,#fbb98b,#f19a93);display:grid;place-items:center}.source p{margin:0;font-size:12px;line-height:1.45;color:#56645c}.source strong{color:var(--ink)}.candidate-toggle{border:0;background:#edf4e9;color:#417151;border-radius:10px;padding:9px 11px;font-weight:900;font-size:12px;cursor:pointer}.candidate-list{display:none;margin-top:9px;font-size:12px;color:#5d6b63;line-height:1.7}.candidate-list.show{display:block}.actions{display:flex;gap:9px;position:sticky;bottom:-34px;background:#fffdf8;padding-top:12px}.button{border:0;border-radius:14px;padding:14px 15px;font-size:14px;font-weight:900;cursor:pointer}.button.primary{flex:1;background:var(--ink);color:white}.button.secondary{background:#ecf1e7;color:#355d49}.toast{position:absolute;z-index:99;top:128px;left:50%;transform:translate(-50%,-15px);opacity:0;pointer-events:none;background:#1e2d27;color:#fff;border-radius:12px;padding:11px 14px;font-size:13px;font-weight:800;transition:.25s;box-shadow:var(--shadow)}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:760px){.topbar{left:28px;right:28px;top:24px}.controls{left:28px;right:auto;top:86px}.locate{right:30px;top:110px}.status{left:30px;top:150px}.sheet{left:28px;bottom:28px;width:390px;right:auto;border-radius:24px;max-height:calc(100dvh - 190px);padding-bottom:16px}.cards{display:grid;overflow:auto;max-height:calc(100dvh - 300px);padding-right:4px}.card{width:auto;min-width:0}.expand{display:none}.detail{align-items:center;justify-content:flex-end;background:rgba(20,27,24,.18);pointer-events:none}.detail-panel{pointer-events:auto;margin-right:28px;width:430px;border-radius:24px;max-height:calc(100dvh - 56px);padding-bottom:18px}.actions{bottom:-18px}.hero{height:190px}}
+</style>
+</head>
+<body>
+<main class="app" aria-label="TossBox prototype">
+  <div class="map" aria-label="模擬地圖"><div class="river"></div><div class="district d1"></div><div class="district d2"></div><div class="district d3"></div><span class="label one">中山</span><span class="label two">松山</span><span class="label three">大安</span><span class="label four">萬華</span></div>
+  <div class="toast" id="toast">這是 prototype：不會開啟真實導航</div>
+  <header class="topbar"><div class="brand" aria-label="TossBox">tb</div><button class="search" id="searchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="6"></circle><path d="m20 20-4.2-4.2"></path></svg><span id="searchText">台北車站附近</span><small>搜尋目的地</small></button><div class="avatar" aria-hidden="true">🌿</div></header>
+  <nav class="controls" aria-label="篩選"><button class="chip active" data-filter="all"><span class="dot"></span>全部</button><button class="chip" data-filter="food">吃東西</button><button class="chip" data-filter="coffee">咖啡甜點</button><button class="chip" data-filter="walk">走走逛逛</button></nav>
+  <div class="status">📍 <b>目前附近</b> · 地圖移動後可重新搜尋</div><button class="locate" id="locate" aria-label="回到目前位置">⌖</button>
+  <button class="place-pin selected" style="left:49%;top:49%" data-id="nien"><span class="pin-dot mint"><span>☕</span></span><span class="pin-note">念念不忘咖啡</span></button>
+  <button class="place-pin" style="left:66%;top:38%" data-id="tiger"><span class="pin-dot pink"><span>🍜</span></span><span class="pin-note">虎記麵舖</span></button>
+  <button class="place-pin" style="left:34%;top:58%" data-id="milk"><span class="pin-dot orange"><span>🍮</span></span><span class="pin-note">牛奶糖研究室</span></button>
+  <button class="place-pin" style="left:72%;top:65%" data-id="garden"><span class="pin-dot violet"><span>🌳</span></span><span class="pin-note">小島花園</span></button>
+  <section class="sheet" id="sheet" aria-label="附近的確認地點"><div class="grab"></div><div class="sheet-head"><div><div class="eyebrow" id="sheetEyebrow">台北車站附近</div><div class="title" id="sheetTitle">先選一個，出發吧</div></div><div><span class="count" id="count">4 個地點</span><button class="expand" id="expand">展開全部</button></div></div><div class="cards" id="cards"></div></section>
+  <section class="detail" id="detail" aria-modal="true" role="dialog" aria-label="地點詳情"><div class="detail-panel"><button class="close" id="close" aria-label="關閉">×</button><div class="hero" id="hero"></div><div class="detail-top"><div class="eyebrow" id="detailType">咖啡甜點 · 已確認地點</div><h1 class="detail-title" id="detailName">念念不忘咖啡</h1><p class="detail-sub" id="detailAddress">中山區赤峰街 47 巷 8 號</p></div><div class="facts"><div class="fact"><b id="detailRating">4.6 ★</b>1,248 則評價</div><div class="fact"><b id="detailPrice">$$</b>價格級別</div><div class="fact"><b id="detailFresh">22 分鐘前</b>資料查詢</div></div><div class="section"><h4>這筆收藏從哪裡來？</h4><div class="source"><i>◒</i><p><strong id="sourceTitle">午後散步的 3 家咖啡廳</strong><br><span id="sourceText">「窗邊的光線很好，適合慢慢喝一杯。」</span></p></div></div><div class="section"><button class="candidate-toggle" id="candidates">查看其他辨識候選 <span>⌄</span></button><div class="candidate-list" id="candidateList">這些是同一 PlaceResolution 的替代辨識候選，尚未確認，不會出現在主地圖或清單中。<br>・念念不忘咖啡（赤峰街）<br>・念念不忘咖啡（民生店）</div></div><div class="actions"><button class="button secondary" id="sourceButton">看來源</button><button class="button primary" id="navigate">在 Google Maps 開啟 ↗</button></div></div></section>
+</main>
+<script is:inline>
+// @ts-nocheck
+const places=[
+{id:'nien',name:'念念不忘咖啡',kind:'coffee',type:'咖啡甜點',address:'中山區赤峰街 47 巷 8 號',rating:'4.6 ★',reviews:'1,248',price:'$$',fresh:'22 分鐘前',emoji:'☕',thumb:'coffee',source:'午後散步的 3 家咖啡廳',quote:'「窗邊的光線很好，適合慢慢喝一杯。」',hero:'linear-gradient(135deg,#d8834d 0 32%,#f1c582 33% 61%,#793e2d 62%)'},
+{id:'tiger',name:'虎記麵舖',kind:'food',type:'吃東西',address:'大同區承德路一段 42 巷 15 號',rating:'4.4 ★',reviews:'876',price:'$',fresh:'2 小時前',emoji:'🍜',thumb:'',source:'下班後的一人晚餐清單',quote:'「湯頭乾淨，晚一點去也不會太有壓力。」',hero:'linear-gradient(135deg,#7a3d25 0 28%,#df7b3f 29% 57%,#f4c274 58%)'},
+{id:'milk',name:'牛奶糖研究室',kind:'coffee',type:'咖啡甜點',address:'萬華區成都路 93 號',rating:'4.7 ★',reviews:'514',price:'$$',fresh:'昨天',emoji:'🍮',thumb:'sweet',source:'西門散步時想再去的甜點店',quote:'「焦糖布丁和音樂都很對味。」',hero:'linear-gradient(135deg,#f5c7ca 0 36%,#ef8f95 37% 66%,#fff0d2 67%)'},
+{id:'garden',name:'小島花園',kind:'walk',type:'走走逛逛',address:'大安區新生南路三段 56 巷 4 號',rating:'4.5 ★',reviews:'326',price:'免費',fresh:'需更新',emoji:'🌳',thumb:'walk',source:'週末不排滿的散步地圖',quote:'「想留一點空白，就往這裡走。」',hero:'linear-gradient(135deg,#72a47d 0 35%,#d7e4ac 36% 63%,#6b9899 64%)'}];
+let current='nien',filter='all';const cards=document.getElementById('cards');const detail=document.getElementById('detail');
+function render(){const items=places.filter(p=>filter==='all'||p.kind===filter);cards.innerHTML=items.map(p=>`<article class="card ${p.id===current?'active':''}" data-id="${p.id}"><div class="thumb ${p.thumb}"></div><div><h3>${p.name}</h3><p>${p.address}</p><div class="meta"><strong>${p.rating}</strong><span>· ${p.type}</span><span class="fresh">${p.fresh}</span></div></div></article>`).join('');document.getElementById('count').textContent=`${items.length} 個地點`;document.querySelectorAll('.card').forEach(el=>el.onclick=()=>select(el.dataset.id,true));document.querySelectorAll('.place-pin').forEach(el=>{const p=places.find(x=>x.id===el.dataset.id);el.style.display=(filter==='all'||p.kind===filter)?'block':'none';el.classList.toggle('selected',el.dataset.id===current)});}
+function select(id,open){current=id;const p=places.find(x=>x.id===id);render();if(open){document.getElementById('detailName').textContent=p.name;document.getElementById('detailType').textContent=`${p.type} · 已確認地點`;document.getElementById('detailAddress').textContent=p.address;document.getElementById('detailRating').textContent=p.rating;document.getElementById('detailPrice').textContent=p.price;document.getElementById('detailFresh').textContent=p.fresh;document.getElementById('sourceTitle').textContent=p.source;document.getElementById('sourceText').textContent=p.quote;document.getElementById('hero').style.background=p.hero;detail.classList.add('open')}}
+document.querySelectorAll('.place-pin').forEach(el=>el.onclick=()=>select(el.dataset.id,true));document.querySelectorAll('.chip').forEach(el=>el.onclick=()=>{filter=el.dataset.filter;document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c===el));const available=places.find(p=>filter==='all'||p.kind===filter);if(!places.filter(p=>filter==='all'||p.kind===filter).some(p=>p.id===current))current=available.id;render()});
+document.getElementById('close').onclick=()=>detail.classList.remove('open');detail.onclick=e=>{if(e.target===detail)detail.classList.remove('open')};document.getElementById('expand').onclick=()=>{const s=document.getElementById('sheet');s.classList.toggle('expanded');document.getElementById('expand').textContent=s.classList.contains('expanded')?'收合地點':'展開全部'};document.getElementById('candidates').onclick=()=>document.getElementById('candidateList').classList.toggle('show');
+function toast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}document.getElementById('navigate').onclick=()=>toast('這是 prototype：不會開啟真實導航');document.getElementById('sourceButton').onclick=()=>toast('這裡會開啟該 PlaceResolution 追溯到的來源貼文');document.getElementById('locate').onclick=()=>toast('已回到目前附近（模擬）');document.getElementById('searchBtn').onclick=()=>{const target=document.getElementById('searchText');const changed=target.textContent==='台北車站附近';target.textContent=changed?'松山文創園區':'台北車站附近';document.getElementById('sheetEyebrow').textContent=target.textContent;toast(changed?'已移動到目的地（模擬）':'已回到台北車站附近（模擬）')};render();
+</script>
+</body></html>

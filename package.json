@@ -1,5 +1,5 @@
 {
-  "name": "taiwan-family-road-trip",
+  "name": "tossbox-map-prototype",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "test": "node tests/validate-site.mjs",
+    "test": "node tests/validate-prototype-site.mjs",
     "validate": "npm run test && npm run check && npm run build"
   },
   "devDependencies": {

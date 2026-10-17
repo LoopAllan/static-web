@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - trip/taiwan-2026-08
+      - site/tossbox-prototype-v1
   workflow_dispatch:
 
 concurrency:
@@ -15,16 +16,30 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      site-slug: ${{ steps.target.outputs.slug }}
+      artifact-name: ${{ steps.target.outputs.artifact }}
+      source-ref: ${{ steps.target.outputs.ref }}
     steps:
-      - name: Guard branch-to-slug mapping
-        env:
-          EXPECTED_REF: refs/heads/trip/taiwan-2026-08
+      - name: Resolve branch-to-slug mapping
+        id: target
         run: |
           set -euo pipefail
-          if [[ "$GITHUB_REF" != "$EXPECTED_REF" ]]; then
-            echo "Ref $GITHUB_REF is not authorized to publish taiwan-2026-08." >&2
-            exit 1
-          fi
+          case "$GITHUB_REF" in
+            refs/heads/trip/taiwan-2026-08)
+              slug="taiwan-2026-08"
+              artifact="taiwan-2026-08-build"
+              ;;
+            refs/heads/site/tossbox-prototype-v1)
+              slug="tossbox-prototype-v1"
+              artifact="tossbox-prototype-v1-build"
+              ;;
+            *)
+              echo "Ref $GITHUB_REF is not authorized to publish." >&2
+              exit 1
+              ;;
+          esac
+          printf 'slug=%s\nartifact=%s\nref=%s\n' "$slug" "$artifact" "$GITHUB_REF" >> "$GITHUB_OUTPUT"
 
       - name: Check out source branch
         uses: actions/checkout@v4
@@ -47,7 +62,7 @@ jobs:
       - name: Upload immutable site build
         uses: actions/upload-artifact@v4
         with:
-          name: taiwan-2026-08-build
+          name: ${{ steps.target.outputs.artifact }}
           path: dist
           if-no-files-found: error
           retention-days: 1
@@ -63,6 +78,21 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Guard branch-to-slug mapping
+        env:
+          EXPECTED_REF: ${{ needs.build.outputs.source-ref }}
+          SITE_SLUG: ${{ needs.build.outputs.site-slug }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != "$EXPECTED_REF" ]]; then
+            echo "Ref $GITHUB_REF does not match build source $EXPECTED_REF." >&2
+            exit 1
+          fi
+          if [[ ! "$SITE_SLUG" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
+            echo "Unsafe site slug: $SITE_SLUG" >&2
+            exit 1
+          fi
+
       - name: Check out deployment scripts
         uses: actions/checkout@v4
         with:
@@ -71,20 +101,15 @@ jobs:
       - name: Download immutable site build
         uses: actions/download-artifact@v4
         with:
-          name: taiwan-2026-08-build
+          name: ${{ needs.build.outputs.artifact-name }}
           path: dist
 
       - name: Assemble and persist complete Pages tree
         env:
-          EXPECTED_REF: refs/heads/trip/taiwan-2026-08
-          SITE_SLUG: taiwan-2026-08
+          SITE_SLUG: ${{ needs.build.outputs.site-slug }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if [[ "$GITHUB_REF" != "$EXPECTED_REF" ]]; then
-            echo "Ref $GITHUB_REF is not authorized to publish $SITE_SLUG." >&2
-            exit 1
-          fi
           if [[ ! "$SITE_SLUG" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
             echo "Unsafe site slug: $SITE_SLUG" >&2
             exit 1
@@ -109,9 +134,7 @@ jobs:
           remote_status=$?
           set -e
           case "$remote_status" in
-            0)
-              git clone --branch gh-pages --single-branch "$remote" pages-site
-              ;;
+            0) git clone --branch gh-pages --single-branch "$remote" pages-site ;;
             2)
               mkdir pages-site
               git -C pages-site init
