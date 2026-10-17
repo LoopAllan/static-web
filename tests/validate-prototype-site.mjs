@@ -51,6 +51,7 @@ for (const marker of [
   '這是 prototype：不會開啟真實導航',
 ]) assert.match(page, new RegExp(escapeRegExp(marker)));
 assert.match(page, /<meta name="description"/);
+assert.match(page, /<style is:global>/);
 assert.match(page, /<button class="place-pin selected"/);
 assert.match(page, /data-filter="coffee"/);
 assert.match(page, /detail\.classList\.add\('open'\)/);
