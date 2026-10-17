@@ -54,6 +54,8 @@ assert.match(page, /<meta name="description"/);
 assert.match(page, /<button class="place-pin selected"/);
 assert.match(page, /data-filter="coffee"/);
 assert.match(page, /detail\.classList\.add\('open'\)/);
+assert.match(page, /id="detailReviews"/);
+assert.match(page, /detailReviews'\)\.textContent=p\.reviews/);
 assert.doesNotMatch(page, /googleapis\.com|maps\.google\.com|api[_-]?key/i);
 
 const workflow = await load('.github/workflows/deploy-pages.yml');
