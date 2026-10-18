@@ -19,6 +19,56 @@ const inboxSources = [
   { id: 'night-market', title: '夜市吃吃清單', status: 'no-place-found', relative: '9 分鐘前', summary: '處理完成，但沒有找到可確認的地點。' },
 ];
 
+const PLACE_STATE_STORAGE_KEY = 'tossbox-place-state';
+const PLACE_STATE_VERSION = 1;
+const MAX_NOTE_LENGTH = 360;
+const OPEN_EVENT_LIMIT = 30;
+let storageAvailable = true;
+let placeState = { version: PLACE_STATE_VERSION, places: {}, confirmedIds: [], openEvents: [] };
+
+function loadPlaceState() {
+  try {
+    const saved = localStorage.getItem(PLACE_STATE_STORAGE_KEY);
+    if (!saved) return;
+    const parsed = JSON.parse(saved);
+    if (parsed?.version !== PLACE_STATE_VERSION || typeof parsed.places !== 'object' || !Array.isArray(parsed.confirmedIds)) return;
+    placeState = {
+      version: PLACE_STATE_VERSION,
+      places: parsed.places,
+      confirmedIds: parsed.confirmedIds.filter((id) => typeof id === 'string'),
+      openEvents: Array.isArray(parsed.openEvents) ? parsed.openEvents.filter((event) => typeof event?.placeId === 'string' && typeof event?.openedAt === 'string').slice(-OPEN_EVENT_LIMIT) : [],
+    };
+  } catch {
+    storageAvailable = false;
+  }
+}
+
+function persistPlaceState() {
+  if (!storageAvailable) return false;
+  try {
+    localStorage.setItem(PLACE_STATE_STORAGE_KEY, JSON.stringify(placeState));
+    return true;
+  } catch {
+    storageAvailable = false;
+    return false;
+  }
+}
+
+function stateFor(place) {
+  if (!placeState.places[place.id]) placeState.places[place.id] = { note: '', visited: false, opens: 0 };
+  return placeState.places[place.id];
+}
+
+function rehydrateConfirmedCandidates() {
+  const greenhouse = findPlace('garden')?.candidates.find((candidate) => candidate.pendingPlace?.id === 'greenhouse');
+  if (greenhouse && placeState.confirmedIds.includes(greenhouse.pendingPlace.id)) {
+    greenhouse.confirmed = true;
+    if (!places.some((place) => place.id === greenhouse.pendingPlace.id)) places.push(greenhouse.pendingPlace);
+    const linkedSource = inboxSources.find((source) => source.linkedPlace === 'garden');
+    if (linkedSource) linkedSource.status = 'resolved';
+  }
+}
+
 let areaId = 'station';
 let filter = 'all';
 let current = 'nien';
@@ -30,6 +80,9 @@ const currentArea = () => areas.find((area) => area.id === areaId);
 const visiblePlaces = () => places.filter((place) => place.area === areaId && (filter === 'all' || place.kind === filter));
 const activeInboxSources = () => inboxSources.filter((source) => !['resolved', 'archived'].includes(source.status));
 
+loadPlaceState();
+rehydrateConfirmedCandidates();
+
 function toast(message) {
   const node = $('toast');
   node.textContent = message;
@@ -37,25 +90,30 @@ function toast(message) {
   setTimeout(() => node.classList.remove('show'), 2600);
 }
 
+function visibleFocusableControls(root) {
+  return [...root.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter((control) => control.offsetParent !== null);
+}
+
 function openModal(id, trigger) {
   lastFocus = trigger || document.activeElement;
   const modal = $(id);
   modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
-  modal.querySelector('input,button')?.focus();
+  visibleFocusableControls(modal)[0]?.focus();
 }
 
 function closeModal(id) {
   const modal = $(id);
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
-  lastFocus?.focus?.();
+  const restore = lastFocus?.isConnected ? lastFocus : document.querySelector('.card.active, .place-pin.selected, #inboxBtn');
+  restore?.focus?.();
 }
 
 function trapFocus(event) {
   const modal = document.querySelector('.modal.open');
   if (!modal || event.key !== 'Tab') return;
-  const controls = [...modal.querySelectorAll('button:not([disabled]),input:not([disabled])')];
+  const controls = visibleFocusableControls(modal);
   if (!controls.length) return;
   const first = controls[0];
   const last = controls.at(-1);
@@ -108,7 +166,7 @@ function render() {
     return;
   }
   items.forEach((place) => {
-    const card = makeButton('', `card ${place.id === current ? 'active' : ''}`, () => select(place.id, true));
+    const card = makeButton('', `card ${place.id === current ? 'active' : ''}`, (event) => select(place.id, true, event.currentTarget));
     const thumb = document.createElement('div');
     thumb.className = 'thumb';
     thumb.style.background = place.hero;
@@ -130,7 +188,7 @@ function render() {
     copy.append(name, address, meta);
     card.append(thumb, copy);
     $('cards').append(card);
-    const pin = makeButton('', `place-pin ${place.id === current ? 'selected' : ''}`, () => select(place.id, true));
+    const pin = makeButton('', `place-pin ${place.id === current ? 'selected' : ''}`, (event) => select(place.id, true, event.currentTarget));
     pin.style.left = place.position[0];
     pin.style.top = place.position[1];
     pin.setAttribute('aria-label', `查看 ${place.name}`);
@@ -152,16 +210,10 @@ function syncChips() {
 }
 
 function renderFreshness(place) {
-  const root = $('freshness');
-  root.dataset.state = place.freshness;
-  root.replaceChildren();
-  const text = document.createElement('span');
-  if (place.freshness === 'fresh') text.textContent = `已更新（模擬）：${place.freshLabel}`;
-  if (place.freshness === 'stale') text.textContent = `資料較舊（模擬）：${place.freshLabel}`;
-  if (place.freshness === 'loading') text.textContent = '正在整理模擬資料，不會連線更新。';
-  if (place.freshness === 'error') text.textContent = '無法取得更新狀態，請再試一次（模擬）。';
-  root.append(text);
-  if (place.freshness === 'error') root.append(makeButton('重新嘗試', 'retry', () => retryFreshness(place)));
+  $('detailTimestamp').textContent = place.freshness === 'error' ? '更新失敗' : place.freshLabel;
+  const retry = $('freshnessRetry');
+  retry.hidden = place.freshness !== 'error';
+  retry.onclick = place.freshness === 'error' ? () => retryFreshness(place) : null;
 }
 
 function retryFreshness(place) {
@@ -184,26 +236,15 @@ function renderDetail(place) {
   $('detailRating').textContent = place.rating;
   $('detailReviews').textContent = place.reviews;
   $('detailPrice').textContent = place.price;
-  $('detailFresh').textContent = place.freshLabel;
   $('sourceTitle').textContent = place.source;
   $('sourceText').textContent = place.quote;
-  $('hero').style.background = place.hero;
   renderFreshness(place);
-  const gallery = $('gallery');
-  gallery.replaceChildren();
-  ['來源圖像欄位', '地點圖像欄位'].forEach((label, index) => {
-    const image = document.createElement('div');
-    image.className = 'image-placeholder';
-    const available = index === 0 ? place.sourceImage : place.placeImage;
-    image.textContent = available ? `${label}：模擬佔位，不是真實照片。` : `${label}：沒有圖像（模擬）。`;
-    gallery.append(image);
-  });
-  if (!place.sourceImage && !place.placeImage) {
-    const noImage = document.createElement('div');
-    noImage.className = 'no-image';
-    noImage.textContent = '沒有可用圖像；這是明確的無圖狀態。';
-    gallery.append(noImage);
-  }
+  renderCarousel(place);
+  const state = stateFor(place);
+  $('visitedToggle').checked = Boolean(state.visited);
+  $('placeNote').value = typeof state.note === 'string' ? state.note.slice(0, MAX_NOTE_LENGTH) : '';
+  $('openCount').textContent = state.opens ? `開啟 ${state.opens} 次` : '尚未記錄開啟次數';
+  $('noteStatus').textContent = storageAvailable ? '僅儲存在這個瀏覽器；最多 360 字。' : '無法儲存到這個瀏覽器，變更只保留到此頁面。';
   const list = $('candidateList');
   list.replaceChildren();
   if (!place.candidates.length) list.textContent = '沒有其他候選。';
@@ -225,9 +266,47 @@ function renderDetail(place) {
   });
 }
 
+function renderCarousel(place) {
+  const carousel = $('imageCarousel');
+  carousel.replaceChildren();
+  const art = place.kind === 'coffee' ? 'coffee' : place.kind === 'food' ? 'food' : 'walk';
+  ['場景', '物件'].forEach((label, index) => {
+    const slide = makeButton('', 'carousel-slide', () => {});
+    slide.setAttribute('aria-label', `${place.name} ${label}示意圖片 ${index + 1} / 2`);
+    const image = document.createElement('img');
+    image.src = new URL(`illustrations/${art}.svg`, document.baseURI).href;
+    image.alt = `${place.type}${label}示意圖`;
+    const caption = document.createElement('span');
+    caption.textContent = `${label}示意`;
+    slide.append(image, caption);
+    carousel.append(slide);
+  });
+  carousel.onkeydown = (event) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    carousel.scrollBy({ left: event.key === 'ArrowRight' ? 180 : -180, behavior: 'smooth' });
+  };
+}
+
+function recordDetailOpen(place) {
+  const state = stateFor(place);
+  state.opens += 1;
+  placeState.openEvents.push({ placeId: place.id, openedAt: new Date().toISOString() });
+  if (placeState.openEvents.length > OPEN_EVENT_LIMIT) placeState.openEvents.splice(0, placeState.openEvents.length - OPEN_EVENT_LIMIT);
+  persistPlaceState();
+}
+
+function openDetail(place, trigger) {
+  recordDetailOpen(place);
+  renderDetail(place);
+  openModal('detail', trigger);
+}
+
 function confirmCandidate(candidate) {
   candidate.confirmed = true;
   if (!places.some((place) => place.id === candidate.pendingPlace.id)) places.push(candidate.pendingPlace);
+  if (!placeState.confirmedIds.includes(candidate.pendingPlace.id)) placeState.confirmedIds.push(candidate.pendingPlace.id);
+  persistPlaceState();
   const linkedSource = inboxSources.find((source) => source.linkedPlace === 'garden');
   if (linkedSource) linkedSource.status = 'resolved';
   current = candidate.pendingPlace.id;
@@ -340,8 +419,7 @@ function openResolution(source) {
   current = place.id;
   syncChips();
   render();
-  renderDetail(place);
-  openModal('detail', $('inboxBtn'));
+  openDetail(place, $('inboxBtn'));
   setTimeout(() => $('candidateList').querySelector('[data-confirm-candidate]')?.focus(), 0);
 }
 
@@ -380,15 +458,12 @@ function advanceProcessingSource() {
   renderInbox();
 }
 
-function select(id, shouldOpen) {
+function select(id, shouldOpen, trigger) {
   const place = findPlace(id);
   if (!place) return;
   current = id;
   render();
-  if (shouldOpen) {
-    renderDetail(place);
-    openModal('detail', document.activeElement);
-  }
+  if (shouldOpen) openDetail(place, trigger || document.activeElement);
 }
 
 function selectArea(id) {
@@ -428,6 +503,20 @@ document.querySelectorAll('.modal').forEach((modal) => modal.addEventListener('c
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { const open = document.querySelector('.modal.open'); if (open) closeModal(open.id); } trapFocus(event); });
 $('navigate').addEventListener('click', () => toast('這是 prototype：不會開啟真實導航。'));
 $('sourceButton').addEventListener('click', () => toast('這是模擬來源欄位；不會開啟貼文。'));
+$('visitedToggle').addEventListener('change', (event) => {
+  const place = findPlace(current);
+  if (!place) return;
+  stateFor(place).visited = event.currentTarget.checked;
+  const saved = persistPlaceState();
+  $('noteStatus').textContent = saved ? '已在這個瀏覽器更新去過狀態。' : '無法儲存到這個瀏覽器，變更只保留到此頁面。';
+});
+$('placeNote').addEventListener('input', (event) => {
+  const place = findPlace(current);
+  if (!place) return;
+  stateFor(place).note = event.currentTarget.value.slice(0, MAX_NOTE_LENGTH);
+  const saved = persistPlaceState();
+  $('noteStatus').textContent = saved ? '備註已儲存於這個瀏覽器。' : '無法儲存到這個瀏覽器，變更只保留到此頁面。';
+});
 $('urlForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const message = $('urlMessage');

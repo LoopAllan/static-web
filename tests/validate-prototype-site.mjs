@@ -50,11 +50,15 @@ for (const marker of [
   '先選一個，出發吧',
   '這筆收藏從哪裡來？',
   '其他辨識候選',
-  '資料查詢',
   '這是 prototype：不會開啟真實導航',
-  '資料為有限模擬資料，重新整理後重設',
+  '示意圖片',
+  '已去過',
+  '新增備註',
+  '開啟次數',
   '新增來源網址',
-  '無法取得更新狀態，請再試一次',
+  '更新失敗',
+  'id="detailTimestamp"',
+  'id="freshnessRetry"',
   '確認此候選',
   '目前位置（模擬）',
   '處理階段',
@@ -82,11 +86,32 @@ for (const marker of [
   'function openResolution',
   'function validateUrl',
   'function trapFocus',
+  'function visibleFocusableControls',
+  'function recordDetailOpen',
+  'function persistPlaceState',
+  'const PLACE_STATE_STORAGE_KEY',
+  'const OPEN_EVENT_LIMIT',
+  'openEvents.push',
+  'textarea:not([disabled])',
   "document.addEventListener('keydown'",
-  "freshness === 'error'",
+  "place.freshness === 'error'",
   'candidate.confirmed = true',
   'textContent =',
 ]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
+assert.match(page, /id="placeNote"/);
+assert.match(page, /id="visitedToggle"/);
+assert.match(page, /id="imageCarousel"/);
+assert.match(page, /aria-label="示意圖片"/);
+assert.doesNotMatch(page, /id="freshness"/);
+assert.doesNotMatch(prototype, /圖像欄位|資料新鮮度|資料查詢|更新 .*（模擬）/);
+assert.match(clientScript, /localStorage/);
+assert.match(clientScript, /PLACE_STATE_VERSION/);
+assert.match(clientScript, /MAX_NOTE_LENGTH/);
+await Promise.all([
+  exists('public/illustrations/coffee.svg'),
+  exists('public/illustrations/food.svg'),
+  exists('public/illustrations/walk.svg'),
+]);
 assert.doesNotMatch(prototype, /data-status\s*=\s*["']confirmed["']/);
 assert.doesNotMatch(prototype, /下午的麵店|已加入確認地點清單/);
 assert.doesNotMatch(clientScript, /status:\s*'confirmed'/);
@@ -95,8 +120,7 @@ assert.match(page, /import '\.\.\/styles\/prototype-inbox\.css'/);
 assert.match(page, /id="pins"/);
 assert.match(page, /data-filter="coffee"/);
 assert.match(page, /id="inboxList"/);
-assert.match(clientScript, /openModal\('detail', \$\('inboxBtn'\)\)/);
-assert.doesNotMatch(clientScript, /openModal\('detail', trigger\)/);
+assert.match(clientScript, /openDetail\(place, \$\('inboxBtn'\)\)/);
 assert.match(clientScript, /\$\('detailReviews'\)\.textContent = place\.reviews/);
 assert.match(clientScript, /source\.status === 'retrying'/);
 assert.match(clientScript, /source\.status = 'no-place-found'/);
