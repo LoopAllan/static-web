@@ -42,7 +42,7 @@ assert.deepEqual(pagesConfig, {
 
 const page = await load('src/pages/index.astro');
 const clientScript = await load('src/scripts/prototype.js');
-const styles = await load('src/styles/prototype.css');
+const styles = await load('src/styles/prototype-inbox.css');
 const prototype = `${page}\n${clientScript}\n${styles}`;
 for (const marker of [
   'TossBox · 地圖優先 Prototype',
@@ -57,30 +57,52 @@ for (const marker of [
   '無法取得更新狀態，請再試一次',
   '確認此候選',
   '目前位置（模擬）',
+  '處理階段',
+  '擷取來源',
+  '分析內容',
+  '解析地點',
+  '查看來源摘要',
+  '前往確認候選',
+  '重新處理（模擬）',
+  '找不到地點',
+  '封存這筆來源',
+  '目前沒有待處理來源',
 ]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
 for (const marker of [
   'id="searchDialog"',
   'role="dialog"',
   'aria-modal="true"',
-  'data-status="processing"',
-  'data-status="needs-confirmation"',
-  'data-status="failed"',
-  'data-status="confirmed"',
+  "status: 'processing'",
+  "status: 'needs-confirmation'",
+  "status: 'failed'",
+  "status: 'no-place-found'",
+  'function renderInbox',
+  'function retryInboxSource',
+  'function dismissInboxSource',
+  'function openResolution',
   'function validateUrl',
   'function trapFocus',
   "document.addEventListener('keydown'",
   "freshness === 'error'",
   'candidate.confirmed = true',
-  'textContent=',
+  'textContent =',
 ]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
+assert.doesNotMatch(prototype, /data-status\s*=\s*["']confirmed["']/);
+assert.doesNotMatch(prototype, /下午的麵店|已加入確認地點清單/);
+assert.doesNotMatch(clientScript, /status:\s*'confirmed'/);
 assert.match(page, /<meta name="description"/);
-assert.match(page, /import '\.\.\/styles\/prototype\.css'/);
+assert.match(page, /import '\.\.\/styles\/prototype-inbox\.css'/);
 assert.match(page, /id="pins"/);
 assert.match(page, /data-filter="coffee"/);
-assert.match(clientScript, /openModal\('detail'/);
-assert.match(page, /id="detailReviews"/);
-assert.match(clientScript, /\$\('detailReviews'\)\.textContent=place\.reviews/);
-assert.doesNotMatch(prototype, /googleapis\.com|maps\.google\.com|api[_-]?key/i);
+assert.match(page, /id="inboxList"/);
+assert.match(clientScript, /openModal\('detail', \$\('inboxBtn'\)\)/);
+assert.doesNotMatch(clientScript, /openModal\('detail', trigger\)/);
+assert.match(clientScript, /\$\('detailReviews'\)\.textContent = place\.reviews/);
+assert.match(clientScript, /source\.status === 'retrying'/);
+assert.match(clientScript, /source\.status = 'no-place-found'/);
+assert.match(clientScript, /linkedSource\.status = 'resolved'/);
+assert.match(clientScript, /message\.textContent = '格式有效；prototype 不會送出請求或儲存網址。'/);
+assert.doesNotMatch(prototype, /googleapis\.com|maps\.google\.com|api[_-]?key|fetch\s*\(/i);
 
 const workflow = await load('.github/workflows/deploy-pages.yml');
 for (const marker of [
