@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check": "astro check",
-    "test": "node tests/validate-prototype-site.mjs",
+    "test": "node --test tests/*.test.mjs && node tests/validate-prototype-site.mjs",
     "validate": "npm run test && npm run check && npm run build"
   },
   "devDependencies": {

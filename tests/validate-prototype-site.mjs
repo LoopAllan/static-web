@@ -24,7 +24,7 @@ const packageJson = JSON.parse(await load('package.json'));
 assert.equal(packageJson.name, 'tossbox-map-prototype');
 assert.equal(packageJson.scripts.build, 'astro build');
 assert.equal(packageJson.scripts.check, 'astro check');
-assert.equal(packageJson.scripts.test, 'node tests/validate-prototype-site.mjs');
+assert.equal(packageJson.scripts.test, 'node --test tests/*.test.mjs && node tests/validate-prototype-site.mjs');
 assert.match(packageJson.devDependencies.astro, /^\^7\./);
 
 const astroConfig = await load('astro.config.mjs');
@@ -42,6 +42,7 @@ assert.deepEqual(pagesConfig, {
 
 const page = await load('src/pages/index.astro');
 const clientScript = await load('src/scripts/prototype.js');
+const authSessionScript = await load('src/scripts/auth-session.js');
 const styles = await load('src/styles/prototype-inbox.css');
 const prototype = `${page}\n${clientScript}\n${styles}`;
 for (const marker of [
@@ -71,6 +72,10 @@ for (const marker of [
   '找不到地點',
   '封存這筆來源',
   '目前沒有待處理來源',
+  '登入 TossBox',
+  '展示登入結果（僅本機）',
+  '模擬工作階段過期',
+  '不會連線、傳送或儲存帳密',
 ]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
 for (const marker of [
   'id="searchDialog"',
@@ -97,6 +102,12 @@ for (const marker of [
   "place.freshness === 'error'",
   'candidate.confirmed = true',
   'textContent =',
+  'function renderAuth',
+  'function clearPasswordInput',
+  'function clearAccountInput',
+  'function startMockLogin',
+  "autocomplete=\"username\"",
+  "autocomplete=\"current-password\"",
 ]) assert.match(prototype, new RegExp(escapeRegExp(marker)));
 assert.match(page, /id="placeNote"/);
 assert.match(page, /id="visitedToggle"/);
@@ -105,6 +116,10 @@ assert.match(page, /aria-label="示意圖片"/);
 assert.doesNotMatch(page, /id="freshness"/);
 assert.doesNotMatch(prototype, /圖像欄位|資料新鮮度|資料查詢|更新 .*（模擬）/);
 assert.match(clientScript, /localStorage/);
+assert.match(clientScript, /PLACE_STATE_VERSION/);
+assert.match(authSessionScript, /function createAuthState/);
+assert.doesNotMatch(authSessionScript, /localStorage|sessionStorage|fetch\s*\(|accessToken|refreshToken/);
+assert.doesNotMatch(clientScript, /fetch\s*\(|\/webapi\/v1\/auth/);
 assert.match(clientScript, /PLACE_STATE_VERSION/);
 assert.match(clientScript, /MAX_NOTE_LENGTH/);
 await Promise.all([

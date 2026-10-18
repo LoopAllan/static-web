@@ -1,3 +1,5 @@
+import { createAuthState, expireSession, finishMockLogin, logout, startDemoLogin, startLogin, tickRateLimit } from './auth-session.js';
+
 const areas = [
   { id: 'station', label: '台北車站附近', aliases: ['台北車站', '車站'] },
   { id: 'songshan', label: '松山文創園區', aliases: ['松山', '文創'] },
@@ -73,6 +75,9 @@ let areaId = 'station';
 let filter = 'all';
 let current = 'nien';
 let lastFocus = null;
+let authState = createAuthState();
+let rateLimitTimer = null;
+let authOutcomeTimer = null;
 const $ = (id) => document.getElementById(id);
 const findPlace = (id) => places.find((place) => place.id === id);
 const findInboxSource = (id) => inboxSources.find((source) => source.id === id);
@@ -90,6 +95,75 @@ function toast(message) {
   setTimeout(() => node.classList.remove('show'), 2600);
 }
 
+function clearAccountInput() {
+  $('accountInput').value = '';
+}
+
+function clearPasswordInput() {
+  $('passwordInput').value = '';
+  $('passwordInput').type = 'password';
+  $('passwordToggle').textContent = '顯示';
+  $('passwordToggle').setAttribute('aria-pressed', 'false');
+}
+
+function stopAuthTimers() {
+  if (rateLimitTimer) clearInterval(rateLimitTimer);
+  if (authOutcomeTimer) clearTimeout(authOutcomeTimer);
+  rateLimitTimer = null;
+  authOutcomeTimer = null;
+}
+
+function authFeedback(state) {
+  if (state.phase === 'submitting') return ['正在顯示本機登入結果；不會送出帳密。', ''];
+  if (state.phase === 'invalid-credentials') return ['帳號或密碼不正確。請重新嘗試。', 'error'];
+  if (state.phase === 'service-unavailable') return ['登入服務暫時無法使用。請重試。', 'error'];
+  if (state.phase === 'rate-limited') return [`嘗試次數過多，請在 ${state.rateLimitRemaining} 秒後再試。`, 'limited'];
+  if (state.phase === 'expired') return ['工作階段已過期，請重新登入。', 'error'];
+  return ['', ''];
+}
+
+function renderAuth() {
+  const active = authState.phase === 'active';
+  const [feedback, feedbackState] = authFeedback(authState);
+  $('authSignedOut').hidden = active;
+  $('authActive').hidden = !active;
+  $('accountBtn').textContent = active ? '帳戶' : '登入';
+  $('authTitle').textContent = active ? '工作階段' : authState.phase === 'expired' ? '重新登入 TossBox' : '登入 TossBox';
+  $('authCopy').textContent = active ? '這是本機展示工作階段；重新整理後即結束。' : '此畫面依照帳號與密碼登入契約設計，但不會連線、傳送或儲存帳密。';
+  $('accountError').textContent = authState.errors.account;
+  $('passwordError').textContent = authState.errors.password;
+  $('authFeedback').textContent = feedback;
+  $('authFeedback').dataset.state = feedbackState;
+  $('authRetry').hidden = authState.phase !== 'service-unavailable';
+  $('authSubmit').disabled = ['submitting', 'rate-limited'].includes(authState.phase);
+  document.querySelectorAll('[data-auth-demo]').forEach((button) => { button.disabled = ['submitting', 'rate-limited'].includes(authState.phase); });
+  $('sessionState').textContent = '登入展示已啟用。沒有顯示帳戶名稱，也沒有儲存 token。';
+}
+
+function completeMockLogin(outcome) {
+  authState = finishMockLogin(authState, outcome, 5);
+  clearPasswordInput();
+  renderAuth();
+  if (authState.phase === 'rate-limited') {
+    rateLimitTimer = setInterval(() => {
+      authState = tickRateLimit(authState);
+      renderAuth();
+      if (authState.phase !== 'rate-limited') {
+        clearInterval(rateLimitTimer);
+        rateLimitTimer = null;
+      }
+    }, 1000);
+  }
+}
+
+function startMockLogin(outcome) {
+  stopAuthTimers();
+  authState = startDemoLogin();
+  renderAuth();
+  authOutcomeTimer = setTimeout(() => completeMockLogin(outcome), 250);
+}
+
+
 function visibleFocusableControls(root) {
   return [...root.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter((control) => control.offsetParent !== null);
 }
@@ -104,6 +178,15 @@ function openModal(id, trigger) {
 
 function closeModal(id) {
   const modal = $(id);
+  if (id === 'authDialog') {
+    clearAccountInput();
+    clearPasswordInput();
+    if (authState.phase === 'submitting') {
+      stopAuthTimers();
+      authState = createAuthState();
+      renderAuth();
+    }
+  }
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
   const restore = lastFocus?.isConnected ? lastFocus : document.querySelector('.card.active, .place-pin.selected, #inboxBtn');
@@ -485,7 +568,29 @@ function validateUrl(value) {
 }
 
 $('searchBtn').addEventListener('click', (event) => { renderAreas(); $('destinationInput').value = ''; openModal('searchDialog', event.currentTarget); });
+$('accountBtn').addEventListener('click', (event) => { renderAuth(); openModal('authDialog', event.currentTarget); });
 $('inboxBtn').addEventListener('click', (event) => { renderInbox(); openModal('inboxDialog', event.currentTarget); });
+$('authForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  const credentials = { account: $('accountInput').value, password: $('passwordInput').value };
+  authState = startLogin(authState, credentials);
+  clearAccountInput();
+  clearPasswordInput();
+  renderAuth();
+  if (authState.phase === 'submitting') {
+    authOutcomeTimer = setTimeout(() => completeMockLogin('invalid'), 250);
+  }
+});
+$('passwordToggle').addEventListener('click', () => {
+  const reveal = $('passwordInput').type === 'password';
+  $('passwordInput').type = reveal ? 'text' : 'password';
+  $('passwordToggle').textContent = reveal ? '隱藏' : '顯示';
+  $('passwordToggle').setAttribute('aria-pressed', String(reveal));
+});
+document.querySelectorAll('[data-auth-demo]').forEach((button) => button.addEventListener('click', () => startMockLogin(button.dataset.authDemo)));
+$('authRetry').addEventListener('click', () => startMockLogin('unavailable'));
+$('expireSession').addEventListener('click', () => { authState = expireSession(authState); renderAuth(); });
+$('logoutBtn').addEventListener('click', () => { authState = logout(); clearPasswordInput(); renderAuth(); closeModal('authDialog'); toast('已登出本機展示工作階段。'); });
 $('locate').addEventListener('click', () => selectArea('current'));
 $('destinationForm').addEventListener('submit', (event) => {
   event.preventDefault();
@@ -531,4 +636,5 @@ $('urlForm').addEventListener('submit', (event) => {
 
 render();
 renderInbox();
+renderAuth();
 setTimeout(advanceProcessingSource, 6000);
