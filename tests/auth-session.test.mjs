@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  canUseApp,
   createAuthState,
   expireSession,
   finishMockLogin,
@@ -48,6 +49,14 @@ test('mock rate limit counts down to a usable signed-out form', () => {
   assert.equal(limited.rateLimitRemaining, 2);
   assert.equal(tickRateLimit(limited).rateLimitRemaining, 1);
   assert.equal(tickRateLimit(tickRateLimit(limited)).phase, 'signed-out');
+});
+
+test('only an active session may use protected prototype functions', () => {
+  const active = finishMockLogin(startDemoLogin(), 'success');
+
+  assert.equal(canUseApp(createAuthState()), false);
+  assert.equal(canUseApp(active), true);
+  assert.equal(canUseApp(expireSession(active)), false);
 });
 
 test('expired and logout sessions return to signed out without credentials', () => {

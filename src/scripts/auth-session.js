@@ -4,6 +4,10 @@ export function createAuthState() {
   return { phase: 'signed-out', errors: emptyErrors(), rateLimitRemaining: 0 };
 }
 
+export function canUseApp(state) {
+  return state.phase === 'active';
+}
+
 export function startDemoLogin() {
   return { ...createAuthState(), phase: 'submitting' };
 }

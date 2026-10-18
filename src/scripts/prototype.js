@@ -1,4 +1,4 @@
-import { createAuthState, expireSession, finishMockLogin, logout, startDemoLogin, startLogin, tickRateLimit } from './auth-session.js';
+import { canUseApp, createAuthState, expireSession, finishMockLogin, logout, startDemoLogin, startLogin, tickRateLimit } from './auth-session.js';
 
 const areas = [
   { id: 'station', label: '台北車站附近', aliases: ['台北車站', '車站'] },
@@ -76,6 +76,7 @@ let filter = 'all';
 let current = 'nien';
 let lastFocus = null;
 let authState = createAuthState();
+let authGateMessage = '';
 let rateLimitTimer = null;
 let authOutcomeTimer = null;
 const $ = (id) => document.getElementById(id);
@@ -119,6 +120,7 @@ function authFeedback(state) {
   if (state.phase === 'service-unavailable') return ['登入服務暫時無法使用。請重試。', 'error'];
   if (state.phase === 'rate-limited') return [`嘗試次數過多，請在 ${state.rateLimitRemaining} 秒後再試。`, 'limited'];
   if (state.phase === 'expired') return ['工作階段已過期，請重新登入。', 'error'];
+  if (authGateMessage) return [authGateMessage, 'error'];
   return ['', ''];
 }
 
@@ -158,9 +160,18 @@ function completeMockLogin(outcome) {
 
 function startMockLogin(outcome) {
   stopAuthTimers();
+  authGateMessage = '';
   authState = startDemoLogin();
   renderAuth();
   authOutcomeTimer = setTimeout(() => completeMockLogin(outcome), 250);
+}
+
+function requireLogin(trigger) {
+  if (canUseApp(authState)) return true;
+  authGateMessage = '登入後才能使用此功能。';
+  renderAuth();
+  openModal('authDialog', trigger);
+  return false;
 }
 
 
@@ -179,6 +190,7 @@ function openModal(id, trigger) {
 function closeModal(id) {
   const modal = $(id);
   if (id === 'authDialog') {
+    authGateMessage = '';
     clearAccountInput();
     clearPasswordInput();
     if (authState.phase === 'submitting') {
@@ -567,12 +579,28 @@ function validateUrl(value) {
   }
 }
 
+const protectedControlSelector = '#searchBtn, #inboxBtn, #locate, .chip, .card, .place-pin, #freshnessRetry, #sourceButton, #navigate, #visitedToggle, [data-confirm-candidate], #urlForm button, .area-option';
+document.addEventListener('click', (event) => {
+  const control = event.target.closest(protectedControlSelector);
+  if (control && !requireLogin(control)) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}, true);
+document.addEventListener('submit', (event) => {
+  if (event.target.matches('#destinationForm, #urlForm') && !requireLogin(event.target)) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}, true);
+
 $('searchBtn').addEventListener('click', (event) => { renderAreas(); $('destinationInput').value = ''; openModal('searchDialog', event.currentTarget); });
 $('accountBtn').addEventListener('click', (event) => { renderAuth(); openModal('authDialog', event.currentTarget); });
 $('inboxBtn').addEventListener('click', (event) => { renderInbox(); openModal('inboxDialog', event.currentTarget); });
 $('authForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const credentials = { account: $('accountInput').value, password: $('passwordInput').value };
+  authGateMessage = '';
   authState = startLogin(authState, credentials);
   clearAccountInput();
   clearPasswordInput();
@@ -611,6 +639,11 @@ $('sourceButton').addEventListener('click', () => toast('這是模擬來源欄�
 $('visitedToggle').addEventListener('change', (event) => {
   const place = findPlace(current);
   if (!place) return;
+  if (!canUseApp(authState)) {
+    event.currentTarget.checked = Boolean(stateFor(place).visited);
+    requireLogin(event.currentTarget);
+    return;
+  }
   stateFor(place).visited = event.currentTarget.checked;
   const saved = persistPlaceState();
   $('noteStatus').textContent = saved ? '已在這個瀏覽器更新去過狀態。' : '無法儲存到這個瀏覽器，變更只保留到此頁面。';
@@ -618,6 +651,11 @@ $('visitedToggle').addEventListener('change', (event) => {
 $('placeNote').addEventListener('input', (event) => {
   const place = findPlace(current);
   if (!place) return;
+  if (!canUseApp(authState)) {
+    event.currentTarget.value = stateFor(place).note;
+    requireLogin(event.currentTarget);
+    return;
+  }
   stateFor(place).note = event.currentTarget.value.slice(0, MAX_NOTE_LENGTH);
   const saved = persistPlaceState();
   $('noteStatus').textContent = saved ? '備註已儲存於這個瀏覽器。' : '無法儲存到這個瀏覽器，變更只保留到此頁面。';
